@@ -170,6 +170,10 @@
     .card-manual:hover { border-color: var(--calor); }
     .card-manual .card-cta { color: var(--calor); }
 
+    .card-site .card-accent { background: var(--verde); }
+    .card-site:hover { border-color: var(--verde); }
+    .card-site .card-cta { color: var(--verde); }
+
     /* disabled / coming soon */
     .card-soon {
       background: var(--surface);
@@ -256,13 +260,13 @@
         <span class="card-cta">Abrir o manual <span class="arrow">→</span></span>
       </a>
 
-      <div class="card card-soon" aria-disabled="true">
+      <a class="card card-site" href="site.html">
         <span class="card-num">03</span>
         <span class="card-accent"></span>
         <h2>O Site</h2>
         <p>A presença digital da prática — onde a marca encontra o cliente.</p>
-        <span class="badge">Em breve</span>
-      </div>
+        <span class="card-cta">Abrir o site <span class="arrow">→</span></span>
+      </a>
     </nav>
   </main>
 
