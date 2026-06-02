@@ -1211,17 +1211,28 @@
       toastEl._t = setTimeout(function () { toastEl.style.opacity = '0'; toastEl.style.transform = 'translateX(-50%) translateY(20px)'; }, 2600);
     }
 
-    /* ── SCROLL REVEALS + LINE DRAWS ──────────────────── */
-    var revealEls = document.querySelectorAll('[data-reveal], .line-draw');
-    if (reduced || !('IntersectionObserver' in window)) {
+    /* ── SCROLL REVEALS (sweep-based — never leaves content hidden) ── */
+    var revealEls = Array.prototype.slice.call(document.querySelectorAll('[data-reveal], .line-draw'));
+    if (reduced) {
       revealEls.forEach(function (el) { el.classList.add('in-view'); });
     } else {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          if (en.isIntersecting) { en.target.classList.add('in-view'); io.unobserve(en.target); }
-        });
-      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-      revealEls.forEach(function (el) { io.observe(el); });
+      function sweepReveal() {
+        var vh = window.innerHeight || document.documentElement.clientHeight;
+        for (var i = revealEls.length - 1; i >= 0; i--) {
+          // reveal anything whose top has entered the lower 12% of the viewport, or is already above it
+          if (revealEls[i].getBoundingClientRect().top <= vh * 0.88) {
+            revealEls[i].classList.add('in-view');
+            revealEls.splice(i, 1);
+          }
+        }
+      }
+      // call directly (no rAF) so it fires reliably alongside the nav scroll handler
+      window.addEventListener('scroll', sweepReveal, { passive: true });
+      window.addEventListener('resize', sweepReveal, { passive: true });
+      window.addEventListener('hashchange', function () { setTimeout(sweepReveal, 60); });
+      window.addEventListener('load', sweepReveal);
+      sweepReveal();                  // initial pass (top of page)
+      setTimeout(sweepReveal, 1500);  // safety pass after the loader lifts
     }
 
     /* ── ACTIVE SECTION IN NAV ────────────────────────── */
