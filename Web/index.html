@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>erico — Marca &amp; Estratégia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --concreto: #F3F2EE;
+      --surface:  #ECEAE4;
+      --sombra:   #1A1A19;
+      --fg-secondary: #4A4843;
+      --fg-muted: #6B6860;
+      --border:   #DDD9D1;
+      --border-strong: #C2BEB4;
+      --calor:    #B28C4D;
+      --ceu:      #00347E;
+      --verde:    #386247;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--concreto);
+      color: var(--sombra);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─── DECORATIVE SYMBOL ────────────────────────────────── */
+    .bg-symbol {
+      position: fixed;
+      top: 50%;
+      right: -160px;
+      transform: translateY(-50%);
+      width: 620px;
+      height: auto;
+      opacity: 0.04;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── SHELL ────────────────────────────────────────────── */
+    .wrap {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 72px 48px 56px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─── HERO ─────────────────────────────────────────────── */
+    .hero { margin-bottom: 72px; }
+    .eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--calor);
+      margin-bottom: 28px;
+    }
+    .hero-logo {
+      width: 280px;
+      max-width: 70vw;
+      height: auto;
+      display: block;
+      margin-bottom: 28px;
+    }
+    .hero-sub {
+      font-family: 'Syne', sans-serif;
+      font-weight: 500;
+      font-size: clamp(20px, 2.6vw, 28px);
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      color: var(--sombra);
+      max-width: 560px;
+    }
+    .hero-note {
+      margin-top: 18px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--fg-muted);
+      max-width: 520px;
+    }
+
+    /* ─── CHOICE GRID ──────────────────────────────────────── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 32px 28px 28px;
+      text-decoration: none;
+      color: inherit;
+      min-height: 280px;
+      transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(26,26,25,0.08);
+    }
+    .card-num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      color: var(--border-strong);
+      margin-bottom: 20px;
+    }
+    .card-accent {
+      width: 36px;
+      height: 3px;
+      border-radius: 2px;
+      margin-bottom: 20px;
+    }
+    .card h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 22px;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+    .card p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--fg-secondary);
+      margin-bottom: 28px;
+    }
+    .card-cta {
+      margin-top: auto;
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-cta .arrow { transition: transform 0.25s ease; }
+    .card:hover .card-cta .arrow { transform: translateX(4px); }
+
+    .card-estrategia .card-accent { background: var(--ceu); }
+    .card-estrategia:hover { border-color: var(--ceu); }
+    .card-estrategia .card-cta { color: var(--ceu); }
+
+    .card-manual .card-accent { background: var(--calor); }
+    .card-manual:hover { border-color: var(--calor); }
+    .card-manual .card-cta { color: var(--calor); }
+
+    /* disabled / coming soon */
+    .card-soon {
+      background: var(--surface);
+      cursor: default;
+    }
+    .card-soon:hover { transform: none; box-shadow: none; border-color: var(--border); }
+    .card-soon .card-accent { background: var(--border-strong); }
+    .card-soon h2, .card-soon p { color: var(--fg-muted); }
+    .badge {
+      align-self: flex-start;
+      margin-top: auto;
+      font-family: 'Syne', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      border: 1px solid var(--border-strong);
+      border-radius: 100px;
+      padding: 5px 12px;
+    }
+
+    /* ─── FOOTER ───────────────────────────────────────────── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 24px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .footer-mark { height: 16px; width: auto; opacity: 0.7; }
+    .footer-meta {
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--fg-muted);
+      text-align: right;
+    }
+
+    /* ─── RESPONSIVE ───────────────────────────────────────── */
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+      .card { min-height: 0; }
+      .wrap { padding: 56px 24px 40px; }
+      footer { padding: 20px 24px; flex-direction: column; gap: 14px; }
+      .footer-meta { text-align: center; }
+      .bg-symbol { right: -240px; opacity: 0.03; }
+    }
+  </style>
+</head>
+<body>
+
+  <img class="bg-symbol" src="assets/simbolo-contorno.png" alt="" aria-hidden="true" />
+
+  <main class="wrap">
+    <header class="hero">
+      <p class="eyebrow">Projeto de Marca</p>
+      <img class="hero-logo" src="assets/erico-wordmark.png" alt="erico" />
+      <h1 class="hero-sub">A marca, do conceito à presença.</h1>
+      <p class="hero-note">
+        Este é o ponto de partida do projeto. Escolha por onde começar — a estratégia
+        que orienta a marca ou o manual que a coloca em prática.
+      </p>
+    </header>
+
+    <nav class="grid" aria-label="Escolha o que visualizar">
+      <a class="card card-estrategia" href="estrategia.html">
+        <span class="card-num">01</span>
+        <span class="card-accent"></span>
+        <h2>Estratégia de Marca</h2>
+        <p>Pesquisa de mercado, cenário competitivo e o posicionamento que define onde a prática joga.</p>
+        <span class="card-cta">Ver a estratégia <span class="arrow">→</span></span>
+      </a>
+
+      <a class="card card-manual" href="guideline.html">
+        <span class="card-num">02</span>
+        <span class="card-accent"></span>
+        <h2>Manual da Marca</h2>
+        <p>O sistema visual completo: conceito, logo, cores, tipografia e regras de aplicação.</p>
+        <span class="card-cta">Abrir o manual <span class="arrow">→</span></span>
+      </a>
+
+      <div class="card card-soon" aria-disabled="true">
+        <span class="card-num">03</span>
+        <span class="card-accent"></span>
+        <h2>O Site</h2>
+        <p>A presença digital da prática — onde a marca encontra o cliente.</p>
+        <span class="badge">Em breve</span>
+      </div>
+    </nav>
+  </main>
+
+  <footer>
+    <img class="footer-mark" src="assets/erico-wordmark.png" alt="erico" />
+    <p class="footer-meta">Marca &amp; Estratégia &nbsp;·&nbsp; Brasília &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; Confidencial</p>
+  </footer>
+
+</body>
+</html>
