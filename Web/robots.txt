@@ -1,0 +1,8 @@
+# Erico Advogados
+# O ambiente de aprovacao (ericoadv.vercel.app) e mantido fora dos buscadores
+# pelo cabecalho X-Robots-Tag: noindex definido no vercel.json.
+# Este arquivo ja esta pronto para o lancamento em erico.law.
+User-agent: *
+Allow: /
+
+Sitemap: https://erico.law/sitemap.xml
