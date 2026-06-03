@@ -344,7 +344,12 @@
       color: var(--on-dark-muted); font-size: 12px; letter-spacing: 0.08em;
       display: flex; flex-direction: column; gap: 6px;
     }
-    .mobile-menu__foot a { font-family: var(--body); font-size: 13px; font-weight: 500; color: var(--on-dark-soft); padding: 0; opacity: 1; transform: none; }
+    .mobile-menu__foot a { font-family: var(--body); font-size: 13px; font-weight: 500; color: var(--on-dark-soft); padding: 8px 0; opacity: 1; transform: none; }
+    .mobile-lang { display: flex; gap: 24px; margin-bottom: 14px; }
+    .mobile-lang .lang__btn { color: var(--on-dark-soft); font-size: 14px; letter-spacing: 0.06em; padding: 11px 0; min-height: 44px; }
+    .mobile-lang .lang__btn.active { color: var(--concreto); }
+    .mobile-lang .lang__btn:not(.active) { opacity: 0.6; }
+    .mobile-lang .flag { width: 24px; height: 17px; display: block; flex-shrink: 0; border: 0.5px solid rgba(243,242,238,0.22); }
 
     /* ═══ HERO ═════════════════════════════════════════════ */
     .hero {
@@ -368,8 +373,8 @@
     .hero__bg::after {
       content: ""; position: absolute; inset: 0;
       background:
-        linear-gradient(100deg, var(--concreto) 0%, rgba(243,242,238,0.92) 26%, rgba(243,242,238,0.45) 50%, rgba(243,242,238,0.05) 72%),
-        linear-gradient(to top, rgba(243,242,238,0.55) 0%, transparent 32%);
+        linear-gradient(100deg, var(--concreto) 0%, rgba(243,242,238,0.93) 30%, rgba(243,242,238,0.52) 56%, rgba(243,242,238,0.06) 80%),
+        linear-gradient(to top, rgba(243,242,238,0.55) 0%, transparent 34%);
     }
     .hero__inner {
       position: relative; z-index: 2;
@@ -410,8 +415,9 @@
       opacity: 0; transform: translateY(16px);
     }
     .hero__cta {
-      margin-top: 34px;
+      margin-top: 22px;
       display: inline-flex; align-items: center; gap: 12px;
+      padding: 12px 0;
       font-family: var(--display); font-weight: 600;
       font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase;
       color: var(--azul);
@@ -666,9 +672,7 @@
       gap: clamp(14px, 3vw, 40px); align-items: center;
       padding: clamp(22px, 3vw, 34px) 0;
       border-bottom: 1px solid var(--border);
-      transition: padding-left 0.4s var(--ease);
     }
-    .pub-item:hover { padding-left: 14px; }
     .pub-item__idx { font-family: var(--display); font-weight: 700; font-size: 13px; color: var(--dourado); font-variant-numeric: tabular-nums; }
     .pub-item__title { font-family: var(--display); font-weight: 600; font-size: clamp(18px, 2.2vw, 26px); letter-spacing: -0.01em; color: var(--sombra); line-height: 1.18; }
     .pub-item__meta { font-size: 12px; letter-spacing: 0.06em; color: var(--fg-muted); text-transform: uppercase; text-align: right; }
@@ -708,7 +712,7 @@
     .detail { background: var(--concreto); padding: clamp(24px, 3vw, 36px); }
     .detail dt { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--fg-muted); margin-bottom: 12px; }
     .detail dd { font-size: clamp(15px, 1.4vw, 18px); color: var(--sombra); line-height: 1.4; }
-    .detail a { transition: color 0.25s var(--ease); }
+    .detail a { display: inline-block; padding: 8px 0; transition: color 0.25s var(--ease); }
     .detail a:hover { color: var(--azul); }
 
     /* ═══ FOOTER ═══════════════════════════════════════════ */
@@ -733,7 +737,7 @@
     .footer__brand p { margin-top: 18px; max-width: 30ch; font-size: 14px; line-height: 1.6; color: var(--on-dark-muted); }
     .footer__nav { display: flex; gap: 56px; flex-wrap: wrap; }
     .footer__nav-col h4 { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--on-dark-muted); margin-bottom: 18px; }
-    .footer__nav-col a, .footer__nav-col span { display: block; font-size: 14px; color: var(--on-dark-soft); padding: 5px 0; transition: color 0.25s var(--ease); }
+    .footer__nav-col a, .footer__nav-col span { display: block; font-size: 14px; color: var(--on-dark-soft); padding: 11px 0; transition: color 0.25s var(--ease); }
     .footer__nav-col a:hover { color: var(--dourado); }
     .footer__bottom {
       position: relative; z-index: 2;
@@ -962,6 +966,10 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
     <a href="#publicacoes"><span>03</span> Publicações</a>
     <a href="#contato"><span>04</span> Contato</a>
     <div class="mobile-menu__foot">
+      <div class="mobile-lang" role="group" aria-label="Idioma">
+        <button class="lang__btn active" data-lang="pt" aria-pressed="true"><svg class="flag" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#009C3B"/><path d="M14 2.4 25.4 10 14 17.6 2.6 10Z" fill="#FFDF00"/><circle cx="14" cy="10" r="3.9" fill="#00247D"/></svg> PT</button>
+        <button class="lang__btn" data-lang="en" aria-pressed="false" title="Versão em inglês em breve"><svg class="flag" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#FFFFFF"/><g fill="#B22234"><rect width="28" height="1.54" y="0"/><rect width="28" height="1.54" y="3.08"/><rect width="28" height="1.54" y="6.16"/><rect width="28" height="1.54" y="9.24"/><rect width="28" height="1.54" y="12.32"/><rect width="28" height="1.54" y="15.4"/><rect width="28" height="1.52" y="18.48"/></g><rect width="11.2" height="10.78" fill="#3C3B6E"/></svg> EN</button>
+      </div>
       <a href="mailto:erico@erico.law">erico@erico.law</a>
       <span>Brasília — DF · OAB/DF 1182426</span>
     </div>
@@ -1317,7 +1325,7 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') toggleMenu(false); });
 
     /* ── LANG TOGGLE (EN scaffold) ────────────────────── */
-    var langBtns = document.querySelectorAll('.lang button');
+    var langBtns = document.querySelectorAll('[data-lang]');
     langBtns.forEach(function (b) {
       b.addEventListener('click', function () {
         if (b.dataset.lang === 'en') {
