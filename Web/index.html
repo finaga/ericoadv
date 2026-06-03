@@ -21,6 +21,7 @@
       --calor:    #B28C4D;
       --ceu:      #00347E;
       --verde:    #386247;
+      --cerrado:  #C13939;
     }
 
     html { scroll-behavior: smooth; }
@@ -174,6 +175,10 @@
     .card-site:hover { border-color: var(--verde); }
     .card-site .card-cta { color: var(--verde); }
 
+    .card-downloads .card-accent { background: var(--cerrado); }
+    .card-downloads:hover { border-color: var(--cerrado); }
+    .card-downloads .card-cta { color: var(--cerrado); }
+
     /* disabled / coming soon */
     .card-soon {
       background: var(--surface);
@@ -266,6 +271,14 @@
         <h2>O Site</h2>
         <p>A presença digital da prática — onde a marca encontra o cliente.</p>
         <span class="card-cta">Abrir o site <span class="arrow">→</span></span>
+      </a>
+
+      <a class="card card-downloads" href="downloads.html">
+        <span class="card-num">04</span>
+        <span class="card-accent"></span>
+        <h2>Downloads</h2>
+        <p>Os arquivos prontos da marca: cartão de visita, apresentações, papel timbrado e capa de LinkedIn.</p>
+        <span class="card-cta">Baixar materiais <span class="arrow">→</span></span>
       </a>
     </nav>
   </main>
