@@ -351,8 +351,8 @@
       overflow: hidden;
     }
     .hero__bg {
-      position: absolute; inset: 0;
-      z-index: 0;
+      position: absolute; inset: -18% 0;   /* extra height gives the parallax room to drift */
+      z-index: 0; will-change: transform;
     }
     .hero__bg img {
       width: 100%; height: 100%;
@@ -633,45 +633,71 @@
 
     /* ═══ 03 — PUBLICAÇÕES ═════════════════════════════════ */
     .pubs { padding: var(--section-y) 0; background: var(--surface); }
-    .pub-featured {
-      display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.5fr);
-      gap: clamp(20px, 4vw, 56px);
-      border: 1px solid var(--border-strong);
-      background: var(--concreto);
-      padding: clamp(28px, 4vw, 52px);
-      margin-bottom: clamp(32px, 4vw, 48px);
-      position: relative; overflow: hidden;
+    .pubs__scroll {
+      --pub-pin: clamp(96px, 18vh, 200px);   /* shared top offset for the pinned text + cover */
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr);
+      gap: clamp(28px, 5vw, 80px);
+      align-items: start;
+      margin-top: clamp(20px, 3vw, 40px);
     }
-    .pub-featured__tag {
+
+    /* LEFT — each step is a full-viewport scroll track; its content (the inner)
+       pins at the same top offset as the cover, so their top edges always align. */
+    .pub-step { min-height: 58vh; }
+    .pub-step:last-child { min-height: 46vh; }
+    .pub-step__inner {
+      position: sticky; top: var(--pub-pin, 18vh);
+      display: grid; grid-template-columns: auto 1fr;
+      column-gap: clamp(14px, 2vw, 22px); align-items: start;
+      opacity: 0.42; transition: opacity 0.5s var(--ease), padding-left 0.5s var(--ease);
+    }
+    .pub-step__inner::before {
+      content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+      background: var(--azul); transform: scaleY(0); transform-origin: top;
+      transition: transform 0.5s var(--ease);
+    }
+    .pub-step.is-active .pub-step__inner { opacity: 1; padding-left: clamp(16px, 2vw, 26px); }
+    .pub-step.is-active .pub-step__inner::before { transform: scaleY(1); }
+    .pub-step__idx {
+      font-family: var(--display); font-weight: 700; font-size: 13px;
+      color: var(--dourado); font-variant-numeric: tabular-nums;
+      align-self: start; padding-top: 4px; transition: color 0.4s var(--ease);
+    }
+    .pub-step.is-active .pub-step__idx { color: var(--azul); }
+    .pub-step__meta {
+      display: flex; align-items: center; gap: 10px;
       font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
       color: var(--azul); margin-bottom: 18px;
-      display: flex; align-items: center; gap: 10px;
     }
-    .pub-featured__tag::before { content:""; width:18px; height:1px; background: var(--dourado); }
-    .pub-featured__title {
+    .pub-step__meta::before { content: ""; width: 18px; height: 1px; background: var(--dourado); }
+    .pub-step__title {
       font-family: var(--display); font-weight: 700;
-      font-size: clamp(23px, 2.8vw, 38px); line-height: 1.1;
-      letter-spacing: -0.02em; color: var(--sombra);
+      font-size: clamp(21px, 2.6vw, 33px); line-height: 1.13; letter-spacing: -0.02em;
+      color: var(--sombra);
     }
-    .pub-featured__year {
-      font-family: var(--display); font-weight: 800;
-      font-size: clamp(40px, 6vw, 86px); color: var(--border-strong);
-      line-height: 0.9; letter-spacing: -0.02em;
-      font-variant-numeric: tabular-nums;
-    }
-    .pub-featured__desc { color: var(--fg-secondary); font-size: 15px; line-height: 1.62; margin-top: 22px; max-width: 56ch; }
-    .pub-featured__desc em { font-style: italic; }
+    .pub-step__cover { display: none; }   /* inline cover only used on mobile */
+    .pub-step__desc { color: var(--fg-secondary); font-size: 15px; line-height: 1.62; margin-top: 20px; max-width: 52ch; }
+    .pub-step__desc em { font-style: italic; }
 
-    .pub-list { border-top: 1px solid var(--border); }
-    .pub-item {
-      display: grid; grid-template-columns: clamp(40px,5vw,72px) 1fr auto;
-      gap: clamp(14px, 3vw, 40px); align-items: center;
-      padding: clamp(22px, 3vw, 34px) 0;
-      border-bottom: 1px solid var(--border);
+    /* RIGHT — cover pinned at the SAME top offset as the step inner, so the
+       cover's top edge lines up with the active step's text. */
+    .pubs__visual {
+      position: sticky; top: var(--pub-pin, 18vh); align-self: start;
+      display: flex; align-items: flex-start; justify-content: center;
     }
-    .pub-item__idx { font-family: var(--display); font-weight: 700; font-size: 13px; color: var(--dourado); font-variant-numeric: tabular-nums; }
-    .pub-item__title { font-family: var(--display); font-weight: 600; font-size: clamp(18px, 2.2vw, 26px); letter-spacing: -0.01em; color: var(--sombra); line-height: 1.18; }
-    .pub-item__meta { font-size: 12px; letter-spacing: 0.06em; color: var(--fg-muted); text-transform: uppercase; text-align: right; }
+    .pub-figure { width: 100%; display: flex; justify-content: center; }
+    .pub-figure:not(.is-active) { display: none; }
+    .pub-figure.is-active { animation: pubFade 0.5s var(--ease); }
+    .pub-figure__cover {
+      /* Uniform height across all covers, capped at the smallest cover's native
+         height (466px) so the low-res covers are never upscaled. Width follows. */
+      height: min(58vh, 466px); width: auto; max-width: 100%; display: block;
+      border: 1px solid var(--border-strong);
+      box-shadow: 0 24px 60px -32px rgba(26, 26, 25, 0.6);
+      background: var(--concreto);
+    }
+    @keyframes pubFade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
     /* ═══ 04 — CONTATO ═════════════════════════════════════ */
     .contato { padding: var(--section-y) 0; }
@@ -759,8 +785,23 @@
       .pillar__desc { grid-column: 2 / 3; }
       .perfil__grid { grid-template-columns: 1fr; }
       .perfil__photo .frame { aspect-ratio: 1 / 1; max-width: 480px; }
-      .pub-featured { grid-template-columns: 1fr; }
       .contato__top { grid-template-columns: 1fr; align-items: start; }
+    }
+    @media (max-width: 860px) {
+      /* No pinning on mobile: single column, each step shows its own cover inline. */
+      .pubs__scroll { grid-template-columns: 1fr; gap: 0; }
+      .pubs__visual { display: none; }
+      .pub-step, .pub-step:last-child { min-height: 0; }
+      .pub-step__inner { position: static; opacity: 1; padding: clamp(28px, 6vw, 40px) 0; }
+      .pub-step.is-active .pub-step__inner { padding-left: 0; }
+      .pub-step__inner::before { display: none; }
+      .pub-step.is-active .pub-step__idx { color: var(--dourado); }
+      .pub-step__cover {
+        /* Same uniform-height treatment on mobile (height-driven, width auto). */
+        display: block; height: 240px; width: auto; max-width: 100%;
+        margin: 22px 0 4px; border: 1px solid var(--border-strong);
+        box-shadow: 0 18px 48px -30px rgba(26, 26, 25, 0.55); background: var(--concreto);
+      }
     }
     @media (max-width: 760px) {
       .nav__links, .lang { display: none; }
@@ -768,8 +809,6 @@
       .nav { padding: 16px var(--pad); }
       .hero__statement { max-width: 100%; }
       .modelo__cols { grid-template-columns: 1fr; gap: 36px; }
-      .pub-item { grid-template-columns: 32px 1fr; }
-      .pub-item__meta { grid-column: 2; text-align: left; margin-top: 4px; }
       .footer__grid { flex-direction: column; }
       .hero__meta-inner .mono-label.hide-sm { display: none; }
     }
@@ -1149,43 +1188,94 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
           <div>
             <h2 class="section-title">Publicações</h2>
             <p class="section-lead">
-              Capítulos e artigos sobre arbitragem, decisões do Supremo Tribunal Federal,
-              a Convenção de Nova York e o reconhecimento de sentenças estrangeiras.
+              Capítulos sobre arbitragem, decisões do Supremo Tribunal Federal,
+              Convenção de Nova York e reconhecimento de sentenças estrangeiras.
             </p>
           </div>
         </div>
 
-        <article class="pub-featured" data-reveal>
-          <div>
-            <div class="pub-featured__tag">Capítulo · Brill · Nijhoff</div>
-            <div class="pub-featured__year">2025</div>
+        <div class="pubs__scroll" data-reveal>
+          <!-- LEFT — text steps that scroll past a pinned cover -->
+          <div class="pubs__steps">
+            <article class="pub-step is-active" data-pub="evolution">
+              <div class="pub-step__inner">
+                <span class="pub-step__idx">01</span>
+                <div class="pub-step__text">
+                  <span class="pub-step__meta">Brill · Nijhoff · 2025</span>
+                  <h3 class="pub-step__title">The Evolution of Arbitration in Light of Supreme Court Decisions</h3>
+                  <img class="pub-step__cover" src="assets/pub-evolution.jpg"
+                       alt="Capa de U.S. Supreme Court Precedents on Arbitration" loading="lazy" />
+                  <p class="pub-step__desc">
+                    Capítulo em <em>U.S. Supreme Court Precedents on Arbitration: Shaping the American
+                    Arbitration Law and Practice</em>. Yasmine Lahlou, Carlos Alberto Carmona,
+                    Kabir Duggal e Gustavo Vaughn (eds.). Leiden / Boston, março de 2025.
+                  </p>
+                </div>
+              </div>
+            </article>
+            <article class="pub-step" data-pub="punitive">
+              <div class="pub-step__inner">
+                <span class="pub-step__idx">02</span>
+                <div class="pub-step__text">
+                  <span class="pub-step__meta">Maastricht Law Series · 2023</span>
+                  <h3 class="pub-step__title">The Recognition and Enforcement of Foreign Punitive Damages Decisions in Brazil</h3>
+                  <img class="pub-step__cover" src="assets/pub-punitive-damages.jpg"
+                       alt="Capa de The Recognition and Enforcement of Punitive Damages Judgments Across the Globe" loading="lazy" />
+                  <p class="pub-step__desc">
+                    Capítulo em <em>The Recognition and Enforcement of Punitive Damages Judgments Across
+                    the Globe</em>. Lotte Meurkens e Cedric Vanleenhove (eds.). Haia, 2023.
+                  </p>
+                </div>
+              </div>
+            </article>
+            <article class="pub-step" data-pub="pro-arbitration">
+              <div class="pub-step__inner">
+                <span class="pub-step__idx">03</span>
+                <div class="pub-step__text">
+                  <span class="pub-step__meta">Juris Publishing · 2023</span>
+                  <h3 class="pub-step__title">Short Reflections on the Pro-Arbitration Character of a Pre-Dispute Waiver</h3>
+                  <img class="pub-step__cover" src="assets/pub-pro-arbitration.jpg"
+                       alt="Capa de Pro-Arbitration Revisited: A Tribute to Professor George Bermann" loading="lazy" />
+                  <p class="pub-step__desc">
+                    Capítulo em <em>Pro-Arbitration Revisited: A Tribute to Professor George Bermann from
+                    His Students Over the Years</em>. Kabir Duggal et al. (eds.). Nova York, 2023.
+                  </p>
+                </div>
+              </div>
+            </article>
+            <article class="pub-step" data-pub="prefacio">
+              <div class="pub-step__inner">
+                <span class="pub-step__idx">04</span>
+                <div class="pub-step__text">
+                  <span class="pub-step__meta">Lumen Juris · 2022</span>
+                  <h3 class="pub-step__title">Prefácio</h3>
+                  <img class="pub-step__cover" src="assets/pub-prefacio.jpg"
+                       alt="Capa de O Hoje e o Amanhã na Tributação dos Combustíveis" loading="lazy" />
+                  <p class="pub-step__desc">
+                    Em <em>O Hoje e o Amanhã na Tributação dos Combustíveis</em>. Fabio Silva Alves,
+                    Janssen Murayama, José Guilherme Costa e Mozart Rodrigues Filho (orgs.).
+                    Rio de Janeiro: Lumen Juris, 2022.
+                  </p>
+                </div>
+              </div>
+            </article>
           </div>
-          <div>
-            <h3 class="pub-featured__title">The Evolution of Arbitration in Light of Supreme Court Decisions</h3>
-            <p class="pub-featured__desc">
-              Capítulo em <em>U.S. Supreme Court Precedents on Arbitration: Shaping the American
-              Arbitration Law and Practice</em>. Org. Yasmine Lahlou, Carlos Alberto Carmona,
-              Kabir Duggal e Gustavo Vaughn. Leiden / Boston: Brill · Nijhoff, março de 2025.
-            </p>
-          </div>
-        </article>
 
-        <div class="pub-list">
-          <article class="pub-item" data-reveal>
-            <span class="pub-item__idx">01</span>
-            <h3 class="pub-item__title">Pro-Arbitration Revisited</h3>
-            <span class="pub-item__meta">Arbitragem</span>
-          </article>
-          <article class="pub-item" data-reveal style="--d:.06s">
-            <span class="pub-item__idx">02</span>
-            <h3 class="pub-item__title">Punitive Damages</h3>
-            <span class="pub-item__meta">Direito Comparado</span>
-          </article>
-          <article class="pub-item" data-reveal style="--d:.12s">
-            <span class="pub-item__idx">03</span>
-            <h3 class="pub-item__title">Tributação dos Combustíveis</h3>
-            <span class="pub-item__meta">Direito Constitucional</span>
-          </article>
+          <!-- RIGHT — pinned cover that swaps as steps scroll past -->
+          <div class="pubs__visual" aria-hidden="true">
+            <figure class="pub-figure is-active" data-pub="evolution">
+              <img class="pub-figure__cover" src="assets/pub-evolution.jpg" alt="" loading="lazy" />
+            </figure>
+            <figure class="pub-figure" data-pub="punitive">
+              <img class="pub-figure__cover" src="assets/pub-punitive-damages.jpg" alt="" loading="lazy" />
+            </figure>
+            <figure class="pub-figure" data-pub="pro-arbitration">
+              <img class="pub-figure__cover" src="assets/pub-pro-arbitration.jpg" alt="" loading="lazy" />
+            </figure>
+            <figure class="pub-figure" data-pub="prefacio">
+              <img class="pub-figure__cover" src="assets/pub-prefacio.jpg" alt="" loading="lazy" />
+            </figure>
+          </div>
         </div>
       </div>
     </section>
@@ -1361,23 +1451,98 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
       setTimeout(sweepReveal, 1500);  // safety pass after the loader lifts
     }
 
-    /* ── ACTIVE SECTION IN NAV ────────────────────────── */
-    var sections = document.querySelectorAll('main section[id]');
+    /* ── ACTIVE SECTION IN NAV (scroll-position based — robust for tall sections) ── */
+    var sections = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
     var links = {};
     document.querySelectorAll('.nav__link').forEach(function (l) {
       links[l.getAttribute('href').slice(1)] = l;
     });
-    if ('IntersectionObserver' in window) {
-      var spy = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          if (en.isIntersecting) {
-            Object.values(links).forEach(function (l) { l.classList.remove('active'); });
-            var id = en.target.getAttribute('id');
-            if (links[id]) links[id].classList.add('active');
-          }
+    if (sections.length) {
+      function setActiveNav() {
+        // The active section is the last one whose top has crossed a reference line
+        // just below the nav. Works identically scrolling up or down, any height.
+        var line = (window.innerHeight || document.documentElement.clientHeight) * 0.30;
+        var currentId = sections[0].getAttribute('id');
+        for (var i = 0; i < sections.length; i++) {
+          if (sections[i].getBoundingClientRect().top <= line) currentId = sections[i].getAttribute('id');
+        }
+        // At the very bottom of the page, force the last section (it may be too short
+        // to ever reach the reference line on tall viewports).
+        if ((window.innerHeight + (window.pageYOffset || 0)) >= document.documentElement.scrollHeight - 2) {
+          currentId = sections[sections.length - 1].getAttribute('id');
+        }
+        Object.keys(links).forEach(function (k) { links[k].classList.toggle('active', k === currentId); });
+      }
+      window.addEventListener('scroll', setActiveNav, { passive: true });
+      window.addEventListener('resize', setActiveNav, { passive: true });
+      setActiveNav();
+    }
+
+    /* ── PUBLICAÇÕES — scroll-driven cover (pinned visual swaps per step) ── */
+    var pubScroll = document.querySelector('.pubs__scroll');
+    if (pubScroll) {
+      var pubSteps = Array.prototype.slice.call(pubScroll.querySelectorAll('.pub-step'));
+      var pubFigs  = Array.prototype.slice.call(pubScroll.querySelectorAll('.pub-figure'));
+      var pubCurrent = null;
+
+      function setActivePub(key) {
+        if (key === pubCurrent) return;
+        pubCurrent = key;
+        pubSteps.forEach(function (s) { s.classList.toggle('is-active', s.getAttribute('data-pub') === key); });
+        pubFigs.forEach(function (f) {
+          var on = f.getAttribute('data-pub') === key;
+          f.classList.remove('is-active');
+          if (on) { void f.offsetWidth; f.classList.add('is-active'); } // restart fade
         });
-      }, { threshold: 0.5, rootMargin: '-20% 0px -40% 0px' });
-      sections.forEach(function (s) { spy.observe(s); });
+      }
+
+      // Active = the step whose track is currently pinned: the last one whose top
+      // has reached the pin line (a hair below the shared top offset).
+      function pubOnScroll() {
+        var visualTop = pubScroll.querySelector('.pubs__visual').getBoundingClientRect().top;
+        var line = Math.max(visualTop, 0) + 4;
+        var key = pubSteps[0].getAttribute('data-pub');
+        for (var i = 0; i < pubSteps.length; i++) {
+          if (pubSteps[i].getBoundingClientRect().top <= line) key = pubSteps[i].getAttribute('data-pub');
+        }
+        setActivePub(key);
+      }
+
+      window.addEventListener('scroll', pubOnScroll, { passive: true });
+      window.addEventListener('resize', pubOnScroll, { passive: true });
+      pubOnScroll();
+    }
+
+    /* ── HERO PARALLAX (layered: photo lags, headline drifts up + fades) ── */
+    if (!reduced) {
+      var heroBg = document.querySelector('.hero__bg');
+      var heroInner = document.querySelector('.hero__inner');
+      var heroMeta = document.querySelector('.hero__meta');
+      if (heroBg) {
+        var heroTick = false;
+        function heroParallax() {
+          heroTick = false;
+          var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+          var vh = window.innerHeight || 1;
+          if (y <= 0) {                     // at rest: hand control back to CSS (keeps the intro reveal intact)
+            heroBg.style.transform = '';
+            if (heroInner) { heroInner.style.transform = ''; heroInner.style.opacity = ''; }
+            if (heroMeta) heroMeta.style.opacity = '';
+            return;
+          }
+          if (y > vh) return;               // hero scrolled off — nothing to do
+          heroBg.style.transform = 'translate3d(0,' + (y * 0.18).toFixed(2) + 'px,0)';
+          if (heroInner) {
+            heroInner.style.transform = 'translate3d(0,' + (y * -0.28).toFixed(2) + 'px,0)';
+            heroInner.style.opacity = Math.max(0, 1 - y / (vh * 0.55)).toFixed(3);
+          }
+          if (heroMeta) heroMeta.style.opacity = Math.max(0, 1 - y / (vh * 0.22)).toFixed(3);
+        }
+        function heroOnScroll() { if (!heroTick) { heroTick = true; requestAnimationFrame(heroParallax); } }
+        window.addEventListener('scroll', heroOnScroll, { passive: true });
+        window.addEventListener('resize', heroOnScroll, { passive: true });
+        heroParallax();
+      }
     }
   })();
   </script>
