@@ -39,6 +39,8 @@ git commit -m "description"
 git push origin main   # Vercel auto-deploys in ~30s
 ```
 
+Claude sessions usually run on a `claude/…` branch with `main` checked out in a sibling worktree (`/Projects/Erico Adv`), so you can't `git checkout main` here — commit on the session branch and push with **`git push origin HEAD:main`** (the branch already tracks `origin/main`).
+
 **Only `Web/`, `vercel.json`, `CLAUDE.md`, and `README.md` are tracked** (20 files total). Everything else at the repo root is intentionally untracked and **confidential** — `proposta-erico-advogados.*` (contains pricing), `MARKET-RESEARCH.md`, `Docs/`, `PPT/`, `Brand — Erico.pdf`, `assets/` (source images). **Never `git add .`** — stage `Web/` and `vercel.json` explicitly.
 
 ## Local preview — environment caveat
@@ -49,7 +51,7 @@ This repo lives under a Dropbox **CloudStorage** path the Claude preview/dev-ser
 2. Point `.claude/launch.json` at `cd /tmp/erico-adv-web && exec python3 -m http.server 4321`, then `preview_start`.
 3. **Re-copy after every edit** (`cp Web/site.html /tmp/erico-adv-web/`) and reload.
 
-Gotcha: in that headless preview, programmatic `scrollTo` doesn't fire scroll events or repaint screenshots when scrolled — verify scroll-dependent behavior by dispatching a real `scroll` event and reading the DOM, not by screenshotting a scrolled position. (Also in project memory.)
+Gotcha: in that headless preview, programmatic `scrollTo` doesn't fire scroll events or repaint screenshots when scrolled — verify scroll-dependent behavior by dispatching a real `scroll` event and reading the DOM, not by screenshotting a scrolled position. **To screenshot a lower section**, set `document.documentElement.style.scrollBehavior='auto'` then `el.scrollIntoView({block:'start'})` (and force-reveal: add `.in-view` to all `[data-reveal]`) — that *does* position + repaint, unlike `scrollTo`. (Also in project memory.)
 
 ## `site.html` architecture
 
@@ -58,8 +60,10 @@ Section flow: sticky **nav** → **hero** (full-bleed Niemeyer photo + a left→
 Non-obvious things:
 
 - **Scroll reveals are sweep-based, not `IntersectionObserver`.** `[data-reveal]` elements reveal when their top crosses ~88% of the viewport, computed directly on `scroll`/`resize`/`load`/`hashchange` (no `requestAnimationFrame`). This replaced an observer that left whole sections stuck at `opacity:0` on anchor jumps, restored scroll, and fast loads. **Do not reintroduce an observer-only reveal** — silently-hidden content is the bug it fixes.
-- **The wordmark is an inline SVG `<symbol id="brand-wordmark">`**, traced from the PNG (the Figma library is unreachable — see below), used via `<use>` with `fill: currentColor` so one definition renders navy in the nav and cream in the footer.
-- **Loader** counts `00→100` then lifts. The language toggle is wired via `[data-lang]`; EN shows an "em breve" toast (English isn't built yet). All motion is `prefers-reduced-motion`-aware.
+- **Type is a tokenized scale in `:root`** (`--fs-display-md`, `--fs-h1…h5`, `--fs-body-lg/sm`) mirroring the Figma "04 — Typography" Foundations — see Brand system. The hero is the one bespoke exception: `clamp(34px, 8.6vw, 69px)` (69, not the token's 72, so "Disputas Complexas." stays on one line on desktop). Every small uppercase label uses the shared `overline` recipe (Inter 500 / 12px / 0.14em) — `.eyebrow`, `.mono-label`, pillar/publication/contact/footer labels.
+- **03 Publicações is a static list** — `.pub-item` (cover + details per row) with a `:hover` dark-tint + azul bar, like the Atuação pillars. It replaced a scroll-pinned cover-swap whose last cover cropped off; **don't reintroduce the pin.**
+- **The wordmark is an inline SVG `<symbol id="brand-wordmark">`**, traced from the PNG, used via `<use>` with `fill: currentColor` so one definition renders navy in the nav and cream in the footer.
+- **Loader** counts `00→100` on an eased `requestAnimationFrame` ramp, gated on the hero photo (holds at 90 until the image decodes, so the panel never lifts to a blank hero), then lifts. The language toggle is wired via `[data-lang]`; EN shows an "em breve" toast (English isn't built yet). All motion is `prefers-reduced-motion`-aware.
 - It's one large file — prefer **precise string edits / assertion-checked scripts** over rewriting it wholesale.
 
 ## Brand system
@@ -73,7 +77,7 @@ Non-obvious things:
 ```
 
 - **`--azul` (#00347E) is the primary accent / action color** — active states, links, and the lead "Tribunais Superiores" headline line. **`--dourado` (#B28C4D) is decorative only** — rules, ticks, section numbers; it fails text contrast (~2.8:1), so never set body copy in it. Concreto/Sombra are the light/dark base pair.
-- Type: **Syne** (display, 800/700/600/500) + **Inter** (body, 400–600). No third typeface. Sharp corners throughout (Brasília brutalist "cantos vivos") — the only rounded element is the language pill.
+- Type: **Syne** (display, 800/600/500) + **Inter** (body, 400/500/600) — Syne 700 is intentionally **not** loaded. The size/weight scale is tokenized in `:root` from the Figma Foundations: `--fs-display-md` (section titles, 60), `--fs-h1` (48), `--fs-h2` (36), `--fs-h3` (30 — pillar + publication titles), `--fs-h4` (24), `--fs-h5` (20), `--fs-body-lg` (18), body (16), `--fs-body-sm` (14). **Weight per tier: display 800 · h1/h2 600 · h3–h5 500 · body 400/500.** No third typeface. Sharp corners throughout (Brasília brutalist "cantos vivos") — the only rounded element is the language pill.
 - Aesthetic: Brasília modernist / Niemeyer — architectural photography, generous negative space, **no legal clichés** (no gavels, scales, handshakes).
 - The brand **symbol** fuses the "e" of Erico with Lúcio Costa's Plano Piloto; it is decorative — the **wordmark is the primary signature**.
 - **Hard constraint:** don't invent colors or type outside these foundations.
@@ -82,7 +86,7 @@ Non-obvious things:
 
 ## Figma
 
-The brand library **"Erico Law — LIB"** (`fileKey Id01yu8iHw0YBmJv2QJRDM`) is **not accessible via the Figma MCP** (account permissions/seat) — don't burn retries on it. Pull foundations from committed sources instead (tokens in `site.html`, the manual in `guideline.html`, assets in `Web/assets/`). For a Figma-only asset, ask Andre to export it into `Web/assets/`.
+The brand library **"Erico Law — LIB"** (`fileKey Id01yu8iHw0YBmJv2QJRDM`). The **Foundations frame** (`node-id 2010-3`, sections 01 Colors → 04 Typography) **is readable** via `get_design_context` / `get_screenshot` — it's the source of truth for the color + type tokens, and `site.html`'s `:root` mirrors it. `use_figma` (write) and FigJam may still be seat-gated; don't burn retries there. Committed fallbacks: tokens in `site.html`'s `:root`, the manual in `guideline.html`, assets in `Web/assets/`. For a Figma-only asset, ask Andre to export it into `Web/assets/`.
 
 ## erico.law launch checklist
 
