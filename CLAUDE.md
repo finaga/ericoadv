@@ -24,11 +24,13 @@ Plain HTML + embedded CSS + a little vanilla JS. **No build step, no framework, 
 | `Web/index.html` | Project hub. Its card 03 ("O Site") links to `site.html`. |
 | `Web/estrategia.html` | Pre-design research / strategy brief (source: `MARKET-RESEARCH.md`). |
 | `Web/guideline.html` | Brand manual. ~700 KB with base64-embedded assets — don't read it whole; grep it. |
+| `Web/downloads.html` | **Brand-asset download page.** Buttons serve the deliverable files in `Web/downloads/` (cards, brand-manual PDF, fonts zip, LinkedIn cover, letterhead `.docx`, PPTX templates, logos). Linked from `index.html`. |
+| `Web/downloads/` | The deployed deliverable files themselves. Note the **renamed-copy convention**: source assets are copied in under stable `erico-…` names (e.g. `assets/Deliverables/Cartoes/B-Frente.pdf` → `downloads/erico-cartao-frente.pdf`). Includes a `logos/` subfolder (~60 logo variants). To update a deliverable, copy the new source over the matching `erico-…` file — don't change the filename the page links to. |
 | `Web/assets/` | Logo + symbol PNGs (navy + inverse/cream variants) and site photos (`bg-hero`, `bg-modernista`, `erico-retrato`). |
 | `Web/robots.txt`, `Web/sitemap.xml` | Launch-ready for erico.law (see indexing below). |
 
 ### Routing & indexing (`vercel.json`)
-- **Rewrites** serve `Web/` at the domain root: `/` → `Web/index.html`, `/site.html` → `Web/site.html`, `/assets/*` → `Web/assets/*`.
+- **Rewrites** serve everything under `Web/` at the domain root via a single catch-all: `/` → `Web/index.html`, and `/:path*` → `/Web/:path*` (so `/site.html`, `/downloads.html`, `/assets/*`, `/downloads/*` all resolve with no per-file config).
 - **Headers** apply `X-Robots-Tag: noindex, nofollow` **scoped by host to `ericoadv.vercel.app`**. This keeps the approval domain out of Google while leaving erico.law (a different host) indexable with zero edits.
 
 ## Deploying
@@ -41,7 +43,7 @@ git push origin main   # Vercel auto-deploys in ~30s
 
 Claude sessions usually run on a `claude/…` branch with `main` checked out in a sibling worktree (`/Projects/Erico Adv`), so you can't `git checkout main` here — commit on the session branch and push with **`git push origin HEAD:main`** (the branch already tracks `origin/main`).
 
-**Only `Web/`, `vercel.json`, `CLAUDE.md`, and `README.md` are tracked** (20 files total). Everything else at the repo root is intentionally untracked and **confidential** — `proposta-erico-advogados.*` (contains pricing), `MARKET-RESEARCH.md`, `Docs/`, `PPT/`, `Brand — Erico.pdf`, `assets/` (source images). **Never `git add .`** — stage `Web/` and `vercel.json` explicitly.
+**Only `Web/`, `vercel.json`, `CLAUDE.md`, and `README.md` are tracked** (~94 files, most of them the brand deliverables under `Web/downloads/`). Everything else at the repo root is intentionally untracked and **confidential** — `proposta-erico-advogados.*` (contains pricing), `MARKET-RESEARCH.md`, `Docs/`, `PPT/`, `Brand — Erico.pdf`, `assets/` (source images). **Never `git add .`** — stage `Web/` and `vercel.json` explicitly.
 
 ## Local preview — environment caveat
 
