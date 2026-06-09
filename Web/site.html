@@ -398,7 +398,7 @@
     .hero__statement {
       font-family: var(--display);
       font-weight: 800;
-      font-size: clamp(34px, 8.6vw, 69px);   /* mobile floor 34; 8.6vw makes tablets/iPad render near the cap and wrap (big + breaking); 69px ceiling lets the widest phrase ("Disputas Complexas." ≈ container width) sit whole on desktop — clean 3-line */
+      font-size: clamp(30px, 8.6vw, 69px);   /* mobile floor 30 (was 34 — lowered so "Disputas Complexas." clears a 320px screen edge; only bites ≤395px where 8.6vw < floor); 8.6vw makes tablets/iPad render near the cap and wrap (big + breaking); 69px ceiling lets the widest phrase ("Disputas Complexas." ≈ container width) sit whole on desktop — clean 3-line */
       line-height: 1.1;                       /* display/lg 110% */
       letter-spacing: -0.032em;
       color: var(--sombra);
@@ -819,6 +819,17 @@
       /* Publicações: stack cover over text on phones. */
       .pub-item { grid-template-columns: 1fr; gap: 24px; padding: clamp(32px, 7vw, 48px) 0; }
       .pub-item__cover { height: 248px; }
+      /* Section headers stack vertically on phones: eyebrow number → title → lead,
+         instead of the number sitting beside the title (which also narrows the column). */
+      .section-head { flex-direction: column; gap: 12px; }
+      .section-num { padding-top: 0; }
+      .section-lead { margin-top: 16px; }
+    }
+    /* Narrow phones: scale the section heading below the display-md 34px floor so the
+       longest single word ("Publicações", ~325px at 34px) stops overflowing the column.
+       Caps at the 34px token floor — only ever scales down. */
+    @media (max-width: 420px) {
+      .section-title { font-size: clamp(24px, 6.6vw, 34px); }
     }
     /* nav collapses to the burger earlier than the rest, so the 16px links never crowd the wordmark */
     @media (max-width: 820px) {
