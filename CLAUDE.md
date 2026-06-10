@@ -21,6 +21,7 @@ Plain HTML + embedded CSS + a little vanilla JS. **No build step, no framework, 
 | File | Role |
 |------|------|
 | `Web/site.html` | **The firm site.** Single page; the main deliverable. |
+| `Web/v2.html` | **Alternative concept "Edição Noturna"** (Jun 2026) — cinematic dark-first version of the same single page, same copy/assets verbatim. GSAP 3.12 + ScrollTrigger + Lenis + Three.js r149 via CDN (the only pages with JS libs; everything else stays dependency-free). WebGL navy-duotone hero (offscreen-canvas → `CanvasTexture` upload — direct `<img>` textures fail on some GL stacks), Lenis smooth scroll, scroll-morphing body background (sombra → azul → concreto), pinned horizontal Publicações gallery (≥901px; swipe rail below), char-split hero (word-wrapped spans — char spans alone break mid-word), custom cursor, magnetic contact CTA. All motion behind `prefers-reduced-motion`; no-JS/no-GSAP fallbacks show full content. Hero type is `clamp(34px, 5.25vw, 76px)` — char-split Syne 800 measures ~6% wider than normal text (kerning lost); 76px is the one-line-per-statement ceiling at 1440. |
 | `Web/index.html` | Project hub. Its card 03 ("O Site") links to `site.html`. |
 | `Web/estrategia.html` | Pre-design research / strategy brief (source: `MARKET-RESEARCH.md`). |
 | `Web/guideline.html` | Brand manual. ~700 KB with base64-embedded assets — don't read it whole; grep it. |
