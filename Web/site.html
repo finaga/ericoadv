@@ -443,15 +443,35 @@
     .hero__cta .arrow { transition: transform 0.3s var(--ease); }
     .hero__cta:hover .arrow { transform: translateY(4px); }
 
+    /* hero actions — editorial scroll CTA + a quiet, secondary contact link */
+    .hero__actions {
+      margin-top: clamp(20px, 3vw, 28px);
+      display: inline-flex; align-items: center; flex-wrap: wrap;
+      gap: clamp(14px, 2.4vw, 22px);
+    }
+    .hero__actions .hero__cta { margin-top: 0; }
+    .hero__actions-div { width: 1px; height: 16px; background: var(--border-strong); }
+    .hero__contact {
+      font-family: var(--body); font-weight: 500; font-size: 14px;   /* body/sm */
+      letter-spacing: 0.02em; color: var(--fg-muted);
+      transition: color 0.25s var(--ease);
+    }
+    .hero__contact:hover, .hero__contact:focus-visible { color: var(--azul); }
+    .hero__contact, .hero__actions-div { opacity: 0; transform: translateY(16px); }
+
     /* loaded → reveal hero */
     body.loaded .hero__eyebrow,
     body.loaded .hero__sub,
-    body.loaded .hero__cta {
+    body.loaded .hero__cta,
+    body.loaded .hero__contact,
+    body.loaded .hero__actions-div {
       opacity: 1; transform: translateY(0);
       transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
     }
     body.loaded .hero__sub { transition-delay: 0.66s; }
     body.loaded .hero__cta { transition-delay: 0.76s; }
+    body.loaded .hero__contact,
+    body.loaded .hero__actions-div { transition-delay: 0.84s; }
     body.loaded .hero__statement .line > span {
       opacity: 1; transform: translateY(0);
       transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
@@ -826,6 +846,7 @@
       .section-head { flex-direction: column; gap: 12px; }
       .section-num { padding-top: 0; }
       .section-lead { margin-top: 16px; }
+      .hero__actions-div { display: none; }   /* drop the vertical divider once actions can wrap */
     }
     /* Narrow phones: scale the section heading below the display-md 34px floor so the
        longest single word ("Publicações", ~325px at 34px) stops overflowing the column.
@@ -854,7 +875,7 @@
         animation-iteration-count: 1 !important;
         transition-duration: 0.001ms !important;
       }
-      [data-reveal], .hero__eyebrow, .hero__sub, .hero__cta,
+      [data-reveal], .hero__eyebrow, .hero__sub, .hero__cta, .hero__contact, .hero__actions-div,
       .hero__statement .line > span, .hero__meta { opacity: 1 !important; transform: none !important; }
       .line-draw, .pillar::before { transform: none !important; }
       .hero__bg img { transform: none !important; }
@@ -1055,7 +1076,11 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
             Atuação perante o Supremo Tribunal Federal e o Superior Tribunal de Justiça,
             em causas de alta complexidade constitucional, empresarial e regulatória.
           </p>
-          <a class="hero__cta" href="#atuacao"><span class="hero__cta-label">Conheça a atuação</span> <span class="arrow">↓</span></a>
+          <div class="hero__actions">
+            <a class="hero__cta" href="#atuacao"><span class="hero__cta-label">Conheça a atuação</span> <span class="arrow">↓</span></a>
+            <span class="hero__actions-div" aria-hidden="true"></span>
+            <a class="hero__contact" href="mailto:erico@erico.law">Falar com o escritório</a>
+          </div>
         </div>
       </div>
       <div class="hero__meta">

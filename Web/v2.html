@@ -81,12 +81,13 @@
       --ink-muted:     #6B6860;
       --border-day:    #DDD9D1;
       --azul:          #00347E;
+      --azul-lift:     #5685CB;   /* lifted azul — primary accent ON the dark base (#00347E is ~1.4:1 on sombra; this clears AA) */
       --dourado:       #B28C4D;
       --verde:         #386247;
       /* On dark */
       --cream:         rgba(243,242,238,0.94);
       --cream-soft:    rgba(243,242,238,0.72);
-      --cream-muted:   rgba(243,242,238,0.48);
+      --cream-muted:   rgba(243,242,238,0.56);   /* ≥4.5:1 for 12px overline labels on the dark base (was .48 ≈ 3.9:1) */
       --cream-line:    rgba(243,242,238,0.16);
       --cream-line-2:  rgba(243,242,238,0.30);
 
@@ -181,9 +182,22 @@
       position: fixed; inset: 0 0 auto 0; z-index: var(--z-nav);
       display: flex; align-items: center; justify-content: space-between;
       padding: var(--space-lg) var(--pad);
-      mix-blend-mode: difference; color: #F3F2EE;
+      color: var(--concreto);
+      transition: color .45s var(--ease-out);
     }
-    .nav__wordmark { width: 104px; height: 14px; display: block; color: #F3F2EE; }
+    /* The nav is transparent, so the body colour shows through it. A faint top
+       scrim keeps the cream mark legible over the hero media + dark bands; it
+       fades out on light sections, where the nav switches to ink (.nav--on-light). */
+    .nav::before {
+      content: ''; position: absolute; inset: 0 0 auto 0; height: var(--space-5xl);   /* 128px safe band */
+      background: linear-gradient(to bottom, rgba(26,26,25,.92) 0%, rgba(26,26,25,.66) 42%, rgba(26,26,25,0) 100%);
+      pointer-events: none; z-index: -1; transition: background .45s var(--ease-out);
+    }
+    .nav--on-light { color: var(--ink); }
+    .nav--on-light::before {
+      background: linear-gradient(to bottom, rgba(243,242,238,.94) 0%, rgba(243,242,238,.70) 42%, rgba(243,242,238,0) 100%);
+    }
+    .nav__wordmark { width: 104px; height: 14px; display: block; color: currentColor; }
     .nav__links { display: flex; gap: var(--space-xl); align-items: center; }
     .nav__link {
       font-size: var(--fs-body-sm); font-weight: 500; letter-spacing: .02em;
@@ -196,12 +210,12 @@
     }
     .nav__link:hover::after { transform: scaleX(1); transform-origin: left; }
     .nav__right { display: flex; align-items: center; gap: var(--space-xl); }
-    .lang { display: flex; border: 1px solid rgba(243,242,238,.4); border-radius: 999px; overflow: hidden; }
+    .lang { display: flex; border: 1px solid color-mix(in srgb, currentColor 36%, transparent); border-radius: 999px; overflow: hidden; }
     .lang__btn {
       font-family: var(--body); font-size: 11px; font-weight: 500; letter-spacing: .08em;
       background: none; border: 0; color: inherit; padding: 5px 11px; opacity: .55;
     }
-    .lang__btn.active { opacity: 1; background: rgba(243,242,238,.16); }
+    .lang__btn.active { opacity: 1; background: color-mix(in srgb, currentColor 16%, transparent); }
     .burger { display: none; background: none; border: 0; width: 40px; height: 32px; position: relative; color: inherit; }
     .burger span {
       position: absolute; left: 8px; right: 8px; height: 1.5px; background: currentColor;
@@ -238,7 +252,10 @@
     html.has-hubbar .hero { min-height: calc(100svh - var(--hubbar-h, 0px)); }
     .hero__media { position: absolute; inset: 0; }
     .hero__media img, .hero__media canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .hero__media img { filter: grayscale(1) brightness(.5) contrast(1.05); }
+    .hero__media img { filter: grayscale(1) brightness(.62) contrast(1.05); }
+    /* the canvas reveals only once WebGL has drawn a real frame; until then — and on any
+       GL/CORS failure, e.g. a local file:// review — the plain photo shows through it */
+    .hero__media canvas { opacity: 0; transition: opacity .6s var(--ease-out); }
     .hero__media::after {
       content: ''; position: absolute; inset: 0;
       background: linear-gradient(to top, rgba(26,26,25,.94) 0%, rgba(26,26,25,.46) 48%, rgba(26,26,25,.42) 100%);
@@ -256,11 +273,11 @@
       color: var(--concreto); text-wrap: balance; margin: 0 0 var(--space-xl);
     }
     .hero__statement .line { display: block; overflow: hidden; padding-bottom: .06em; margin-bottom: -.06em; }
+    .hero__statement .line--lead { color: var(--azul-lift); }   /* azul-led positioning line — matches Site A */
     .hero__statement .line--accent { color: var(--dourado); }
     .hero__sub { max-width: 52ch; font-size: var(--fs-body-lg); color: var(--cream-soft); }
     .hero__cta {
       display: inline-flex; align-items: center; gap: var(--space-md);
-      margin-top: var(--space-xl);
       font-size: var(--fs-body-sm); font-weight: 500; letter-spacing: .06em; text-transform: uppercase;
       color: var(--concreto); border: 1px solid var(--cream-line-2); border-radius: 999px;
       padding: var(--space-md) var(--space-lg); white-space: nowrap;
@@ -269,6 +286,13 @@
     .hero__cta .arrow { transition: transform .4s var(--ease-out); }
     .hero__cta:hover { background: var(--concreto); color: var(--ink); border-color: var(--concreto); }
     .hero__cta:hover .arrow { transform: translateY(4px); }
+    /* hero actions — pill CTA + a quiet, secondary contact link */
+    .hero__actions { display: inline-flex; align-items: center; flex-wrap: wrap; gap: clamp(16px, 3vw, 28px); margin-top: var(--space-xl); }
+    .hero__contact {
+      font-size: var(--fs-body-sm); font-weight: 500; letter-spacing: .04em;
+      color: var(--cream-soft); transition: color .3s var(--ease-out);
+    }
+    .hero__contact:hover, .hero__contact:focus-visible { color: var(--azul-lift); }
     .hero__meta {
       position: relative; z-index: 2;
       border-top: 1px solid var(--cream-line);
@@ -379,13 +403,13 @@
     }
     .contato__mail {
       display: inline-block; font-family: var(--display); font-weight: 800;
-      font-size: clamp(30px, 6.4vw, 92px); line-height: 1.05; letter-spacing: -0.01em;
+      font-size: clamp(22px, 6.4vw, 92px); line-height: 1.05; letter-spacing: -0.01em;
       color: var(--concreto); position: relative; margin-bottom: clamp(48px, 8vw, 112px);
-      overflow-wrap: anywhere;
+      white-space: nowrap; max-width: 100%;   /* the email is one token — shrink it (Syne is wide ~12.4×), never wrap it */
     }
     .contato__mail::after {
       content: ''; position: absolute; left: 0; bottom: -6px; width: 100%; height: 2px;
-      background: var(--dourado); transform: scaleX(0); transform-origin: right;
+      background: var(--azul-lift); transform: scaleX(0); transform-origin: right;
       transition: transform .6s var(--ease-out);
     }
     .contato__mail:hover::after { transform: scaleX(1); transform-origin: left; }
@@ -399,7 +423,7 @@
     /* ─── FOOTER ─────────────────────────────────────────── */
     .footer { border-top: 1px solid var(--cream-line); padding: clamp(48px, 8vw, 96px) 0 var(--space-lg); overflow: hidden; }
     .footer__wordmark-wrap { overflow: hidden; margin-bottom: clamp(40px, 6vw, 80px); }
-    .footer__wordmark { width: 100%; height: auto; aspect-ratio: 4000 / 504; color: var(--concreto); display: block; }
+    .footer__wordmark { width: clamp(170px, 24vw, 320px); height: auto; aspect-ratio: 4000 / 504; color: var(--concreto); display: block; }
     .footer__grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-xl); margin-bottom: var(--space-2xl); }
     .footer__tag { color: var(--cream-soft); max-width: 36ch; }
     .footer__nav { display: flex; gap: var(--space-3xl); }
@@ -632,22 +656,25 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
     <!-- ═══ HERO ═══════════════════════════════════════════ -->
     <section class="hero" id="hero" data-bg="night">
       <div class="hero__media" aria-hidden="true">
-        <img id="heroImg" src="assets/bg-hero.jpg" alt="" width="1674" height="939" fetchpriority="high" crossorigin="anonymous" />
+        <img id="heroImg" src="assets/bg-hero.jpg" alt="" width="1674" height="939" fetchpriority="high" />
         <canvas id="heroCanvas"></canvas>
       </div>
       <div class="hero__inner">
         <div class="container">
           <p class="overline hero__eyebrow" data-hero-fade>Contencioso Estratégico —&nbsp;Brasília</p>
           <h1 class="hero__statement" aria-label="Tribunais Superiores. Disputas Complexas. Arbitragem.">
-            <span class="line"><span class="line__txt">Tribunais Superiores.</span></span>
+            <span class="line line--lead"><span class="line__txt">Tribunais Superiores.</span></span>
             <span class="line"><span class="line__txt">Disputas Complexas.</span></span>
-            <span class="line line--accent"><span class="line__txt">Arbitragem.</span></span>
+            <span class="line"><span class="line__txt">Arbitragem.</span></span>
           </h1>
           <p class="hero__sub" data-hero-fade>
             Atuação perante o Supremo Tribunal Federal e o Superior Tribunal de Justiça,
             em causas de alta complexidade constitucional, empresarial e regulatória.
           </p>
-          <a class="hero__cta" href="#atuacao" data-hero-fade><span>Conheça a atuação</span> <span class="arrow">↓</span></a>
+          <div class="hero__actions">
+            <a class="hero__cta" href="#atuacao" data-hero-fade><span>Conheça a atuação</span> <span class="arrow">↓</span></a>
+            <a class="hero__contact" href="mailto:erico@erico.law" data-hero-fade>Falar com o escritório</a>
+          </div>
         </div>
       </div>
       <div class="hero__meta" data-hero-fade>
@@ -1012,7 +1039,6 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
         'uniform sampler2D uTex; uniform vec2 uRes; uniform vec2 uImg;',
         'uniform vec2 uMouse; uniform float uTime; uniform float uIntro; uniform float uScroll;',
         'varying vec2 vUv;',
-        'float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }',
         'void main() {',
         '  /* cover-fit uv */',
         '  vec2 s = uRes / uImg;',
@@ -1047,7 +1073,6 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
         '  /* vignette + grain */',
         '  float vig = smoothstep(1.25, 0.35, length(vUv - 0.5) * 1.6);',
         '  col *= mix(0.78, 1.0, vig);',
-        '  col += (hash(vUv * uRes + uTime * 60.0) - 0.5) * 0.02;',
         '  gl_FragColor = vec4(col, 1.0);',
         '}'
       ].join('\n');
@@ -1070,19 +1095,25 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
       window.addEventListener('resize', size);
 
       function attach(image) {
-        /* draw into an offscreen canvas first — image-element uploads fail on some GL stacks */
-        var iw = image.naturalWidth || 1674, ih = image.naturalHeight || 939;
-        var scale = Math.min(1, 2048 / iw);
-        var off = document.createElement('canvas');
-        off.width = Math.round(iw * scale); off.height = Math.round(ih * scale);
-        off.getContext('2d').drawImage(image, 0, 0, off.width, off.height);
-        var tex = new THREE.CanvasTexture(off);
-        tex.minFilter = THREE.LinearFilter;
-        tex.magFilter = THREE.LinearFilter;
-        uniforms.uTex.value = tex;
-        uniforms.uImg.value.set(off.width, off.height);
-        canvas.style.opacity = '1';
-        renderer.render(scene, camera);   /* first frame immediately — no blank flash */
+        try {
+          /* draw into an offscreen canvas first — image-element uploads fail on some GL stacks */
+          var iw = image.naturalWidth || 1674, ih = image.naturalHeight || 939;
+          var scale = Math.min(1, 2048 / iw);
+          var off = document.createElement('canvas');
+          off.width = Math.round(iw * scale); off.height = Math.round(ih * scale);
+          off.getContext('2d').drawImage(image, 0, 0, off.width, off.height);
+          var tex = new THREE.CanvasTexture(off);
+          tex.minFilter = THREE.LinearFilter;
+          tex.magFilter = THREE.LinearFilter;
+          uniforms.uImg.value.set(off.width, off.height);
+          uniforms.uTex.value = tex;
+          renderer.render(scene, camera);   /* throws if the source canvas is tainted (e.g. local file://) */
+          canvas.style.opacity = '1';        /* reveal the canvas only once a real frame exists */
+        } catch (err) {
+          /* WebGL can't read the image (cross-origin / tainted) — fall back to the plain <img> */
+          uniforms.uTex.value = null;        /* stop the render loop from re-throwing every frame */
+          canvas.remove();
+        }
       }
       if (img.complete && img.naturalWidth > 0) attach(img);
       else img.addEventListener('load', function () { attach(img); });
@@ -1176,18 +1207,38 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
     document.querySelectorAll('.hero__statement .line__txt').forEach(function (line) {
       heroChars.push(splitChars(line));
     });
+    /* Hide the headline + fade items IMMEDIATELY at split time (page load, while the
+       loader still covers the hero), so they never flash in their final position before
+       the intro plays. Previously .from() only set the hidden start-state when heroIntro
+       ran — 0.34s into the loader lift — which read as "text, then animate". */
+    if (!reduced) {
+      heroChars.forEach(function (chars) { gsap.set(chars, { yPercent: 115 }); });
+      gsap.set('[data-hero-fade]', { opacity: 0, y: 24 });
+    }
 
     function heroIntro() {
       if (reduced) { if (window.__heroIntro) window.__heroIntro(0.01); return; }
       var tl = gsap.timeline();
       if (window.__heroIntro) window.__heroIntro(2.2);
       heroChars.forEach(function (chars, i) {
-        tl.from(chars, {
-          yPercent: 115, duration: 1.0, ease: 'power4.out', stagger: 0.022
+        tl.to(chars, {
+          yPercent: 0, duration: 1.0, ease: 'power4.out', stagger: 0.022
         }, 0.15 + i * 0.12);
       });
-      tl.from('[data-hero-fade]', { opacity: 0, y: 24, duration: 0.9, ease: 'power3.out', stagger: 0.08 }, 0.7);
+      tl.to('[data-hero-fade]', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.08 }, 0.7);
       return tl;
+    }
+
+    /* Failsafe: the pre-hide above is only safe paired with a guaranteed reveal.
+       If the intro never runs (inactive tab, headless/SSR render, loader hiccup),
+       force the headline + fade items visible so the hero can never ship blank. */
+    if (!reduced) {
+      setTimeout(function () {
+        if (!heroChars.length) return;
+        if (Math.abs(gsap.getProperty(heroChars[0][0], 'yPercent')) < 1) return;  // intro already revealed it
+        heroChars.forEach(function (chars) { gsap.to(chars, { yPercent: 0, duration: 0.5, ease: 'power3.out', overwrite: 'auto' }); });
+        gsap.to('[data-hero-fade]', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', overwrite: 'auto' });
+      }, 4000);
     }
 
     /* ══ LOADER ═══════════════════════════════════════════ */
@@ -1210,15 +1261,15 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
         if (finished) return;
         finished = true;
         gsap.to('#loader', {
-          yPercent: -100, duration: 0.9, ease: 'power4.inOut', delay: 0.25,
-          /* fire the headline reveal once the loader has cleared the lower text band,
-             so the full char-rise is on-screen rather than hidden behind the panel */
-          onStart: function () { gsap.delayedCall(0.34, heroIntro); },
+          yPercent: -100, duration: 0.55, ease: 'power4.inOut',
+          /* fire the headline reveal almost immediately as the (now-fast) loader lifts,
+             so the char-rise meets the moment the hero text uncovers */
+          onStart: function () { gsap.delayedCall(0.08, heroIntro); },
           onComplete: function () { showAll(); ScrollTrigger.refresh(); }
         });
       }
       gsap.to(counter, {
-        v: 100, duration: 1.6, ease: 'power2.inOut',
+        v: 100, duration: 0.5, ease: 'power2.inOut',
         onUpdate: function () {
           var ceiling = assetReady ? 100 : 92;
           var val = Math.min(ceiling, Math.round(counter.v));
@@ -1234,16 +1285,25 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
         }
       });
       /* never trap the visitor */
-      setTimeout(function () { finishLoad(); showAll(); }, 4200);
+      setTimeout(function () { finishLoad(); showAll(); }, 2500);
     }
 
-    /* ══ BACKGROUND MORPH per section ═════════════════════ */
+    /* ══ BACKGROUND MORPH + NAV THEME per section ═════════
+       The nav is transparent, so the body colour shows through it. Driving the
+       nav theme from the SAME trigger keeps the nav legible against whatever the
+       body is behind it: cream on the night/azul bands, ink on the day sections.
+       (Replaces mix-blend-difference, whose hue shifted unpredictably per band.) */
+    var navEl = document.getElementById('nav');
     document.querySelectorAll('[data-bg]').forEach(function (sec) {
       var color = BG[sec.dataset.bg] || BG.night;
+      var onLight = sec.dataset.bg === 'day';
+      function applyScene() {
+        gsap.to(body, { backgroundColor: color, duration: 0.7, ease: 'power2.out' });
+        navEl.classList.toggle('nav--on-light', onLight);
+      }
       ScrollTrigger.create({
         trigger: sec, start: 'top 55%', end: 'bottom 55%',
-        onEnter: function () { gsap.to(body, { backgroundColor: color, duration: 0.7, ease: 'power2.out' }); },
-        onEnterBack: function () { gsap.to(body, { backgroundColor: color, duration: 0.7, ease: 'power2.out' }); }
+        onEnter: applyScene, onEnterBack: applyScene
       });
     });
 
