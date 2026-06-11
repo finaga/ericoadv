@@ -114,7 +114,7 @@
 
       --ease-out: cubic-bezier(.22,1,.36,1);
 
-      --z-nav: 1000; --z-menu: 950; --z-loader: 9000; --z-cursor: 9990;
+      --z-nav: 1000; --z-menu: 950; --z-loader: 9000;
     }
 
     html { scroll-behavior: auto; }
@@ -156,23 +156,6 @@
     .skip:focus { top: var(--space-md); }
 
     :focus-visible { outline: 2px solid var(--dourado); outline-offset: 3px; }
-
-    /* ─── CURSOR ─────────────────────────────────────────── */
-    .cursor, .cursor-ring {
-      position: fixed; top: 0; left: 0; pointer-events: none;
-      z-index: var(--z-cursor); border-radius: 50%;
-      mix-blend-mode: difference; display: none;
-    }
-    .cursor { width: 8px; height: 8px; background: #F3F2EE; margin: -4px 0 0 -4px; }
-    .cursor-ring {
-      width: 38px; height: 38px; margin: -19px 0 0 -19px;
-      border: 1px solid rgba(243,242,238,.7);
-      transition: transform .35s var(--ease-out), opacity .35s;
-    }
-    body.cursor-on .cursor, body.cursor-on .cursor-ring { display: block; }
-    body.cursor-hover .cursor-ring { transform: scale(1.9); opacity: .9; }
-    @media (hover:hover) and (pointer:fine) { body.cursor-on { cursor: none; }
-      body.cursor-on a, body.cursor-on button { cursor: none; } }
 
     /* ─── LOADER ─────────────────────────────────────────── */
     .loader {
@@ -272,10 +255,10 @@
     }
     .hero__statement .line { display: block; overflow: hidden; padding-bottom: .06em; margin-bottom: -.06em; }
     .hero__statement .line--accent { color: var(--dourado); }
-    .hero__row { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-xl); }
     .hero__sub { max-width: 52ch; font-size: var(--fs-body-lg); color: var(--cream-soft); }
     .hero__cta {
       display: inline-flex; align-items: center; gap: var(--space-md);
+      margin-top: var(--space-xl);
       font-size: var(--fs-body-sm); font-weight: 500; letter-spacing: .06em; text-transform: uppercase;
       color: var(--concreto); border: 1px solid var(--cream-line-2); border-radius: 999px;
       padding: var(--space-md) var(--space-lg); white-space: nowrap;
@@ -596,12 +579,10 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
 -474 0 -868 -4 -875 -8z"/>
 </g></symbol></svg>
 
-  <noscript><style>.loader{display:none!important}body.is-loading{overflow:auto!important}.cursor,.cursor-ring{display:none!important}</style></noscript>
+  <noscript><style>.loader{display:none!important}body.is-loading{overflow:auto!important}</style></noscript>
 
   <a class="skip" href="#atuacao">Pular para o conteúdo</a>
 
-  <div class="cursor" aria-hidden="true"></div>
-  <div class="cursor-ring" aria-hidden="true"></div>
 
   <!-- ─── LOADER ─────────────────────────────────────────── -->
   <div class="loader" id="loader" aria-hidden="true">
@@ -660,13 +641,11 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
             <span class="line"><span class="line__txt">Disputas Complexas.</span></span>
             <span class="line line--accent"><span class="line__txt">Arbitragem.</span></span>
           </h1>
-          <div class="hero__row">
-            <p class="hero__sub" data-hero-fade>
-              Atuação perante o Supremo Tribunal Federal e o Superior Tribunal de Justiça,
-              em causas de alta complexidade constitucional, empresarial e regulatória.
-            </p>
-            <a class="hero__cta" href="#atuacao" data-hero-fade><span>Conheça a atuação</span> <span class="arrow">↓</span></a>
-          </div>
+          <p class="hero__sub" data-hero-fade>
+            Atuação perante o Supremo Tribunal Federal e o Superior Tribunal de Justiça,
+            em causas de alta complexidade constitucional, empresarial e regulatória.
+          </p>
+          <a class="hero__cta" href="#atuacao" data-hero-fade><span>Conheça a atuação</span> <span class="arrow">↓</span></a>
         </div>
       </div>
       <div class="hero__meta" data-hero-fade>
@@ -1001,24 +980,6 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
       });
     });
 
-    /* ══ CUSTOM CURSOR ════════════════════════════════════ */
-    if (finePointer && !reduced && hasGsap) {
-      body.classList.add('cursor-on');
-      var dot = document.querySelector('.cursor');
-      var ring = document.querySelector('.cursor-ring');
-      var dx = gsap.quickTo(dot, 'x', { duration: 0.12, ease: 'power2.out' });
-      var dy = gsap.quickTo(dot, 'y', { duration: 0.12, ease: 'power2.out' });
-      var rx = gsap.quickTo(ring, 'x', { duration: 0.45, ease: 'power3.out' });
-      var ry = gsap.quickTo(ring, 'y', { duration: 0.45, ease: 'power3.out' });
-      window.addEventListener('mousemove', function (e) {
-        dx(e.clientX); dy(e.clientY); rx(e.clientX); ry(e.clientY);
-      }, { passive: true });
-      document.querySelectorAll('a, button, .pub-card').forEach(function (el) {
-        el.addEventListener('mouseenter', function () { body.classList.add('cursor-hover'); });
-        el.addEventListener('mouseleave', function () { body.classList.remove('cursor-hover'); });
-      });
-    }
-
     /* ══ WEBGL HERO — navy duotone displacement ═══════════ */
     (function initHeroGL() {
       if (reduced || typeof window.THREE === 'undefined') return;
@@ -1248,7 +1209,9 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
         finished = true;
         gsap.to('#loader', {
           yPercent: -100, duration: 0.9, ease: 'power4.inOut', delay: 0.25,
-          onStart: function () { heroIntro(); },
+          /* fire the headline reveal once the loader has cleared the lower text band,
+             so the full char-rise is on-screen rather than hidden behind the panel */
+          onStart: function () { gsap.delayedCall(0.34, heroIntro); },
           onComplete: function () { showAll(); ScrollTrigger.refresh(); }
         });
       }
