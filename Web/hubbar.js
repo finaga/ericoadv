@@ -10,7 +10,9 @@
    Per-page wiring lives entirely on the <script> tag, e.g.:
      <script src="hubbar.js"
              data-section="Site B"          (label shown on the right)
-             data-offset=".nav,.progress"   (top:0 elements to push down)
+             data-offset=".nav,.progress"   (top:0 chrome → snap to bar bottom)
+             data-shift=".toggle"           (inset corner pills → shift down,
+                                             keeping their original gap)
              data-hide=".back-home"></script>(redundant chrome to hide)
 
    This file is the ONE allowed shared front-end asset; every deployed
@@ -34,7 +36,8 @@
   try { if (new URLSearchParams(location.search).has('nohub')) return; } catch (e) {}
 
   var section = me.getAttribute('data-section') || document.title || '';
-  var offsetSel = me.getAttribute('data-offset') || '';
+  var offsetSel = me.getAttribute('data-offset') || '';  /* top:0 chrome → snap to bar bottom */
+  var shiftSel = me.getAttribute('data-shift') || '';    /* inset pills → shift down, keep their gap */
   var hideSel = me.getAttribute('data-hide') || '';
   var BAR_H = 44;
 
@@ -63,6 +66,9 @@
     ];
     offsetSel.split(',').forEach(function (s) {
       s = s.trim(); if (s) css.push('html.has-hubbar ' + s + '{top:var(--hubbar-h)!important;}');
+    });
+    shiftSel.split(',').forEach(function (s) {
+      s = s.trim(); if (s) css.push('html.has-hubbar ' + s + '{margin-top:var(--hubbar-h)!important;}');
     });
     hideSel.split(',').forEach(function (s) {
       s = s.trim(); if (s) css.push('html.has-hubbar ' + s + '{display:none!important;}');
