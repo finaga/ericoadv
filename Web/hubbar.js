@@ -23,12 +23,15 @@
   var me = document.currentScript;
   if (!me) return;
 
-  /* ── gate: only when entered through the hub ─────────────────────── */
-  var viaParam = false;
-  try { viaParam = new URLSearchParams(location.search).has('hub'); } catch (e) {}
-  var viaSession = false;
-  try { viaSession = sessionStorage.getItem('ericoHub') === '1'; } catch (e) {}
-  if (!viaParam && !viaSession) return;
+  /* ── gate: show on every staging/preview page, hide only in production ──
+     The bar is approval-space chrome. It must NEVER appear on the public
+     firm site at erico.law, but should show on EVERY other host
+     (ericoadv.vercel.app, *.vercel.app previews, localhost). This mirrors
+     the host-scoped noindex in vercel.json. An explicit ?nohub param force-
+     hides it for screenshots. */
+  var PROD_HOSTS = ['erico.law', 'www.erico.law'];
+  if (PROD_HOSTS.indexOf(location.hostname) !== -1) return;
+  try { if (new URLSearchParams(location.search).has('nohub')) return; } catch (e) {}
 
   var section = me.getAttribute('data-section') || document.title || '';
   var offsetSel = me.getAttribute('data-offset') || '';
@@ -56,7 +59,7 @@
     /* ── styles: the bar + the layout accommodation ────────────────── */
     var css = [
       'html.has-hubbar{--hubbar-h:' + BAR_H + 'px;}',
-      'html.has-hubbar body{padding-top:var(--hubbar-h);}'
+      'html.has-hubbar body{padding-top:var(--hubbar-h)!important;}'
     ];
     offsetSel.split(',').forEach(function (s) {
       s = s.trim(); if (s) css.push('html.has-hubbar ' + s + '{top:var(--hubbar-h)!important;}');
