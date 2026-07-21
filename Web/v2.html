@@ -978,7 +978,11 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
       lenis = new Lenis({ duration: 1.15, smoothWheel: true });
       lenis.on('scroll', ScrollTrigger.update);
       gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
-      gsap.ticker.lagSmoothing(0);
+      /* keep GSAP's default lag smoothing (500ms threshold → resume at 33ms).
+         lagSmoothing(0) is common Lenis boilerplate, but it makes every time-based
+         timeline JUMP across main-thread stalls — the hero char intro visibly
+         snapped to its end state whenever ScrollTrigger.refresh landed mid-rise */
+      gsap.ticker.lagSmoothing(500, 33);
     }
     if (hasGsap) gsap.registerPlugin(ScrollTrigger);
 
@@ -1251,7 +1255,13 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
           /* 0.34s: the lifting panel must clear the headline area BEFORE the char-rise
              starts, or the first word finishes hidden and the rest pops in already-risen */
           onStart: function () { gsap.delayedCall(0.34, heroIntro); },
-          onComplete: function () { showAll(); ScrollTrigger.refresh(); }
+          onComplete: function () {
+            showAll();
+            /* defer the refresh until the char intro is over — a full ScrollTrigger
+               layout pass stalls the main thread long enough to freeze the rise
+               mid-word (the "Contencioso alone, then everything pops" bug) */
+            gsap.delayedCall(2.1, function () { ScrollTrigger.refresh(); });
+          }
         });
       }
       gsap.to(counter, {
