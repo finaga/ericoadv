@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- ─── SEO ─────────────────────────────────────────────── -->
-  <title>Erico Advogados — Tribunais Superiores · Brasília</title>
-  <meta name="description" content="Advocacia perante o STF e o STJ em causas de alta complexidade constitucional, empresarial e regulatória. Contencioso estratégico em Brasília." />
+  <title>Erico Advogados · Contencioso Estratégico · Arbitragem · Brasília</title>
+  <meta name="description" content="Advocacia perante o Supremo Tribunal Federal e o Superior Tribunal de Justiça e nas controvérsias que aproximam a arbitragem do Poder Judiciário. Brasília." />
   <meta name="author" content="Erico Carvalho — Erico Advogados" />
   <meta name="theme-color" content="#F3F2EE" />
   <link rel="canonical" href="https://ericoadv.vercel.app/site.html" />
@@ -15,13 +15,13 @@
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="pt_BR" />
   <meta property="og:site_name" content="Erico Advogados" />
-  <meta property="og:title" content="Erico Advogados — Tribunais Superiores · Disputas Complexas · Arbitragem" />
-  <meta property="og:description" content="Contencioso estratégico perante o STF e o STJ, em causas de alta complexidade constitucional, empresarial e regulatória. Brasília." />
+  <meta property="og:title" content="Erico Advogados · Contencioso Estratégico · Arbitragem · Brasília" />
+  <meta property="og:description" content="Advocacia perante o Supremo Tribunal Federal e o Superior Tribunal de Justiça e nas controvérsias que aproximam a arbitragem do Poder Judiciário. Brasília." />
   <meta property="og:url" content="https://ericoadv.vercel.app/site.html" />
   <meta property="og:image" content="https://ericoadv.vercel.app/assets/bg-hero.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Erico Advogados — Tribunais Superiores · Disputas Complexas · Arbitragem" />
-  <meta name="twitter:description" content="Contencioso estratégico perante o STF e o STJ. Brasília." />
+  <meta name="twitter:title" content="Erico Advogados · Contencioso Estratégico · Arbitragem · Brasília" />
+  <meta name="twitter:description" content="Advocacia perante o Supremo Tribunal Federal e o Superior Tribunal de Justiça e nas controvérsias que aproximam a arbitragem do Poder Judiciário. Brasília." />
   <meta name="twitter:image" content="https://ericoadv.vercel.app/assets/bg-hero.jpg" />
 
   <!-- Icons -->
@@ -39,7 +39,7 @@
     "@context": "https://schema.org",
     "@type": "LegalService",
     "name": "Erico Advogados",
-    "description": "Contencioso estratégico perante o Supremo Tribunal Federal e o Superior Tribunal de Justiça, em causas de alta complexidade constitucional, empresarial e regulatória, e na interface entre jurisdição estatal e arbitragem.",
+    "description": "Advocacia perante o Supremo Tribunal Federal e o Superior Tribunal de Justiça e nas controvérsias que aproximam a arbitragem do Poder Judiciário.",
     "url": "https://ericoadv.vercel.app/",
     "email": "erico@erico.law",
     "areaServed": "BR",
@@ -629,6 +629,8 @@
       border-top: 1px solid var(--on-dark-border);
       padding-top: clamp(32px, 4vw, 48px);
     }
+    .modelo__cols--solo { grid-template-columns: 1fr; }
+    .modelo__cols--solo .modelo__col { max-width: 60ch; margin: 0 auto; }
     .modelo__col h3 {
       font-family: var(--display); font-weight: 500; font-size: var(--fs-h4);   /* heading/h4 · Syne Medium 24 */
       line-height: 1.4; color: var(--concreto); margin-bottom: 14px; letter-spacing: -0.01em;
@@ -1027,14 +1029,14 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
     </a>
     <div class="nav__right">
       <nav class="nav__links" aria-label="Navegação principal">
-        <a class="nav__link" href="#atuacao">Atuação</a>
-        <a class="nav__link" href="#perfil">Perfil</a>
-        <a class="nav__link" href="#publicacoes">Publicações</a>
-        <a class="nav__link" href="#contato">Contato</a>
+        <a class="nav__link" href="#atuacao" data-i18n="nav-practice">Atuação</a>
+        <a class="nav__link" href="#perfil" data-i18n="nav-profile">Perfil</a>
+        <a class="nav__link" href="#publicacoes" data-i18n="nav-pubs">Publicações</a>
+        <a class="nav__link" href="#contato" data-i18n="nav-contact">Contato</a>
       </nav>
       <div class="lang" role="group" aria-label="Idioma">
         <button class="lang__btn active" data-lang="pt" aria-pressed="true">PT</button>
-        <button class="lang__btn" data-lang="en" aria-pressed="false" title="Versão em inglês em breve">EN</button>
+        <button class="lang__btn" data-lang="en" aria-pressed="false" aria-label="Switch to English">EN</button>
       </div>
       <button class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileMenu">
         <span></span><span></span><span></span>
@@ -1044,17 +1046,17 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
 
   <!-- mobile menu -->
   <div class="mobile-menu" id="mobileMenu">
-    <a href="#atuacao"><span>01</span> Atuação</a>
-    <a href="#perfil"><span>02</span> Perfil</a>
-    <a href="#publicacoes"><span>03</span> Publicações</a>
-    <a href="#contato"><span>04</span> Contato</a>
+    <a href="#atuacao"><span>01</span> <span data-i18n="nav-practice">Atuação</span></a>
+    <a href="#perfil"><span>02</span> <span data-i18n="nav-profile">Perfil</span></a>
+    <a href="#publicacoes"><span>03</span> <span data-i18n="nav-pubs">Publicações</span></a>
+    <a href="#contato"><span>04</span> <span data-i18n="nav-contact">Contato</span></a>
     <div class="mobile-menu__foot">
       <div class="mobile-lang" role="group" aria-label="Idioma">
         <button class="lang__btn active" data-lang="pt" aria-pressed="true">PT</button>
-        <button class="lang__btn" data-lang="en" aria-pressed="false" title="Versão em inglês em breve">EN</button>
+        <button class="lang__btn" data-lang="en" aria-pressed="false" aria-label="Switch to English">EN</button>
       </div>
       <a href="mailto:erico@erico.law">erico@erico.law</a>
-      <span>Brasília — DF · OAB/DF 1182426</span>
+      <span>Brasília — DF · OAB/DF 18.598</span>
     </div>
   </div>
 
@@ -1066,20 +1068,20 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
       </div>
       <div class="hero__inner">
         <div class="container">
-          <p class="eyebrow hero__eyebrow">Contencioso Estratégico —&nbsp;Brasília</p>
-          <h1 class="hero__statement" aria-label="Tribunais Superiores. Disputas Complexas. Arbitragem.">
-            <span class="line"><span>Tribunais Superiores.</span></span>
-            <span class="line"><span>Disputas Complexas.</span></span>
-            <span class="line"><span>Arbitragem.</span></span>
+          <p class="eyebrow hero__eyebrow">Brasília</p>
+          <h1 class="hero__statement" aria-label="Contencioso Estratégico. Arbitragem.">
+            <span class="line"><span data-i18n="hero-title-1">Contencioso Estratégico.</span></span>
+            <span class="line"><span data-i18n="hero-title-2">Arbitragem.</span></span>
           </h1>
-          <p class="hero__sub">
-            Atuação perante o Supremo Tribunal Federal e o Superior Tribunal de Justiça,
-            em causas de alta complexidade constitucional, empresarial e regulatória.
+          <p class="hero__sub" data-i18n="hero-sub">
+            Advocacia em contencioso estratégico, com atuação predominante perante o Supremo
+            Tribunal Federal e o Superior Tribunal de Justiça e nas controvérsias que aproximam
+            a arbitragem do Poder Judiciário.
           </p>
           <div class="hero__actions">
-            <a class="hero__cta" href="#atuacao"><span class="hero__cta-label">Conheça a atuação</span> <span class="arrow">↓</span></a>
+            <a class="hero__cta" href="#atuacao"><span class="hero__cta-label" data-i18n="hero-cta1">Conheça a atuação</span> <span class="arrow">↓</span></a>
             <span class="hero__actions-div" aria-hidden="true"></span>
-            <a class="hero__contact" href="mailto:erico@erico.law">Falar com o escritório</a>
+            <a class="hero__contact" href="mailto:erico@erico.law" data-i18n="hero-cta2">Entrar em contato</a>
           </div>
         </div>
       </div>
@@ -1098,11 +1100,11 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
         <div class="section-head" data-reveal>
           <span class="section-num">01</span>
           <div>
-            <h2 class="section-title">Atuação</h2>
-            <p class="section-lead">
-              Contencioso perante os Tribunais Superiores em controvérsias constitucionais,
-              empresariais e regulatórias — disputas de alta complexidade e na interface entre
-              a jurisdição estatal e a arbitragem.
+            <h2 class="section-title" data-i18n="nav-practice">Atuação</h2>
+            <p class="section-lead" data-i18n="atuacao-lead">
+              A prática do escritório concentra-se, sobretudo, no contencioso perante os
+              tribunais superiores e nas questões judiciais relacionadas à arbitragem,
+              da formulação da tese ao julgamento.
             </p>
           </div>
         </div>
@@ -1110,31 +1112,32 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
         <div class="pillars">
           <article class="pillar" data-reveal>
             <span class="pillar__idx">i</span>
-            <h3 class="pillar__title"><small>Supremo Tribunal Federal</small>Conformação constitucional de mercados</h3>
-            <p class="pillar__desc">
-              Ações de controle concentrado e casos de repercussão geral que discutem a conformação
-              constitucional de mercados, tecnologias e escolhas regulatórias — incluindo a
-              constitucionalidade dos aplicativos de mobilidade.
+            <h3 class="pillar__title"><small data-i18n="pillar1-heading">Supremo Tribunal Federal</small><span data-i18n="pillar1-title">Questões constitucionais de alcance nacional</span></h3>
+            <p class="pillar__desc" data-i18n="pillar1-desc">
+              Atuação no controle concentrado de constitucionalidade e em recursos
+              extraordinários, em controvérsias que definem os limites constitucionais da
+              regulação e o ambiente jurídico da atividade econômica.
             </p>
           </article>
 
           <article class="pillar" data-reveal style="--d:.08s">
             <span class="pillar__idx">ii</span>
-            <h3 class="pillar__title"><small>Superior Tribunal de Justiça</small>Controvérsias contratuais complexas</h3>
-            <p class="pillar__desc">
-              Disputas contratuais de alta complexidade, com desdobramentos societários e
-              regulatórios, além de medidas judiciais relacionadas à arbitragem e à eficácia
-              de seus procedimentos e decisões.
+            <h3 class="pillar__title"><small data-i18n="pillar2-heading">Superior Tribunal de Justiça</small><span data-i18n="pillar2-title">Controvérsias empresariais</span></h3>
+            <p class="pillar__desc" data-i18n="pillar2-desc">
+              Condução de recursos especiais e de processos originários em disputas
+              contratuais e societárias de alta complexidade, no espaço reservado à
+              uniformização do direito federal infraconstitucional.
             </p>
           </article>
 
           <article class="pillar" data-reveal style="--d:.16s">
             <span class="pillar__idx">iii</span>
-            <h3 class="pillar__title"><small>Arbitragem</small>Interface entre jurisdição e arbitragem</h3>
-            <p class="pillar__desc">
-              Atuação na fronteira entre a jurisdição estatal e a arbitragem: ações anulatórias,
-              homologação de sentença estrangeira e medidas judiciais de apoio à eficácia de
-              procedimentos e decisões arbitrais.
+            <h3 class="pillar__title"><small data-i18n="pillar3-heading">Arbitragem</small><span data-i18n="pillar3-title">A arbitragem perante o Poder Judiciário</span></h3>
+            <p class="pillar__desc" data-i18n="pillar3-desc">
+              Atuação nas medidas judiciais de apoio à arbitragem e nos litígios posteriores
+              à sentença arbitral, como a ação anulatória e a homologação de decisões
+              estrangeiras, além dos recursos que levam matéria arbitral ao Superior
+              Tribunal de Justiça.
             </p>
           </article>
         </div>
@@ -1147,27 +1150,18 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
         <img src="assets/bg-modernista.jpg" alt="" aria-hidden="true" loading="lazy" width="1066" height="1600" />
       </div>
       <div class="container">
-        <p class="eyebrow on-dark" data-reveal>O Modelo</p>
-        <p class="modelo__statement" data-reveal style="--d:.06s">
-          Prática artesanal, centrada na <em>figura do advogado.</em>
+        <p class="eyebrow on-dark" data-reveal data-i18n="modelo-eyebrow">O escritório</p>
+        <p class="modelo__statement" data-reveal style="--d:.06s" data-i18n="modelo-statement">
+          Prática dedicada.
         </p>
-        <div class="modelo__cols">
+        <div class="modelo__cols modelo__cols--solo">
           <div class="modelo__col" data-reveal style="--d:.12s">
             <span class="tick"></span>
-            <h3>Sem intermediários</h3>
-            <p>
-              O cliente fala diretamente com quem conduz o caso. Cada disputa recebe
-              atenção dedicada — sem repasse a equipes juniores, sem ruído entre a
-              estratégia e a sua execução.
-            </p>
-          </div>
-          <div class="modelo__col" data-reveal style="--d:.2s">
-            <span class="tick"></span>
-            <h3>Complementaridade qualificada</h3>
-            <p>
-              Para bancas sediadas fora de Brasília, atuação como parceiro estratégico
-              na fase de STF e STJ — entrando no momento mais delicado do contencioso,
-              sem desfazer o vínculo do cliente com o seu escritório de origem.
+            <h3 data-i18n="modelo-col-heading">Condução direta</h3>
+            <p data-i18n="modelo-col-desc">
+              Cada caso é conduzido pelo sócio-fundador, da definição da estratégia à
+              sustentação oral. A estrutura do escritório foi concebida para preservar
+              esse padrão de trabalho.
             </p>
           </div>
         </div>
@@ -1179,7 +1173,7 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
       <div class="container">
         <div class="section-head" data-reveal>
           <span class="section-num">02</span>
-          <h2 class="section-title">Perfil</h2>
+          <h2 class="section-title" data-i18n="nav-profile">Perfil</h2>
         </div>
 
         <div class="perfil__grid">
@@ -1189,49 +1183,45 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
             </div>
             <figcaption>
               <span class="mono-label">Erico Carvalho</span>
-              <span class="mono-label">OAB/DF 1182426</span>
+              <span class="mono-label">OAB/DF 18.598</span>
             </figcaption>
           </figure>
 
           <div data-reveal style="--d:.1s">
             <h3 class="perfil__name">Erico Carvalho</h3>
-            <p class="perfil__role">Sócio-fundador</p>
-            <p class="perfil__lead">
-              Mais de vinte anos de litígio estratégico perante o Supremo Tribunal
-              Federal e o Superior Tribunal de Justiça.
+            <p class="perfil__role" data-i18n="perfil-role">Sócio-fundador</p>
+            <p class="perfil__lead" data-i18n="perfil-lead">
+              Erico Carvalho atua há mais de vinte anos, sobretudo perante o Supremo
+              Tribunal Federal e o Superior Tribunal de Justiça, em controvérsias
+              constitucionais e empresariais de repercussão nacional.
             </p>
             <div class="perfil__bio">
-              <p>
-                Atua em controvérsias de grande relevância econômica e institucional —
-                <strong>mercados regulados</strong>, <strong>propriedade intelectual</strong>,
-                <strong>privacidade</strong> e <strong>liberdade de expressão</strong> no
-                ambiente digital, além de disputas <strong>societárias e empresariais</strong>
-                de alta complexidade.
+              <p data-i18n="perfil-bio-1">
+                Antes de fundar o Erico Advogados, construiu essa trajetória em Brasília,
+                à frente de litígios de alcance nacional e transnacional. Essa experiência
+                sustenta uma prática independente, voltada a mandatos que exigem
+                participação direta do advogado responsável pela estratégia.
+              </p>
+              <p data-i18n="perfil-bio-2">
+                Sua atuação se concentra na formulação de teses e na condução de processos
+                cuja solução depende da leitura precisa do direito constitucional ou do
+                direito federal, com experiência particular na relação entre a arbitragem
+                e a jurisdição estatal.
+              </p>
+              <p data-i18n="perfil-bio-3">
+                Possui mestrado (LL.M.) pela Columbia Law School, onde recebeu a distinção
+                Harlan Fiske Stone Scholar e integrou a equipe editorial da American Review
+                of International Arbitration. Sua produção acadêmica acompanha os temas
+                centrais da prática e foi publicada no Brasil e no exterior.
               </p>
             </div>
 
             <div class="perfil__block">
-              <span class="perfil__label">Casos de destaque</span>
-              <ul class="perfil__list">
-                <li>
-                  Reconhecimento, no Brasil, de <strong>sentença estrangeira</strong> descrita pela
-                  imprensa internacional como um dos acontecimentos jurídicos mais relevantes das
-                  últimas décadas.
-                </li>
-                <li>
-                  Atuação no <strong>maior embate empresarial</strong> então em curso no país — na
-                  sobreposição entre arbitragem e processos judiciais.
-                </li>
-              </ul>
-            </div>
-
-            <div class="perfil__block">
-              <span class="perfil__label">Formação</span>
+              <span class="perfil__label" data-i18n="perfil-formacao-label">Formação</span>
               <div class="creds">
                 <span class="cred"><strong>Columbia Law School</strong> · LL.M.</span>
                 <span class="cred">Harlan Fiske Stone Scholar</span>
-                <span class="cred"><strong>UnB</strong> · Relações Internacionais</span>
-                <span class="cred">OAB/DF 1182426</span>
+                <span class="cred" data-i18n="perfil-cred-unb"><strong>UnB</strong> · Relações Internacionais</span>
               </div>
             </div>
           </div>
@@ -1245,25 +1235,39 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
         <div class="section-head" data-reveal>
           <span class="section-num">03</span>
           <div>
-            <h2 class="section-title">Publicações</h2>
-            <p class="section-lead">
-              Capítulos sobre arbitragem, decisões do Supremo Tribunal Federal,
-              Convenção de Nova York e reconhecimento de sentenças estrangeiras.
+            <h2 class="section-title" data-i18n="nav-pubs">Publicações</h2>
+            <p class="section-lead" data-i18n="pubs-lead">
+              A produção acadêmica e técnica do escritório reúne trabalhos publicados no
+              Brasil e no exterior, voltados aos temas centrais da prática, entre eles a
+              arbitragem e sua relação com o Poder Judiciário.
             </p>
           </div>
         </div>
 
         <div class="pubs__list" data-reveal>
           <article class="pub-item">
+            <img class="pub-item__cover" src="assets/pub-messitte.webp"
+                 alt="Capa de Homenagem ao Juiz Peter J. Messitte" loading="lazy" />
+            <div class="pub-item__text">
+              <p class="pub-item__meta"><span class="pub-item__idx">01</span> Amanuense · 2026</p>
+              <h3 class="pub-item__title">Homenagem ao Juiz Peter J. Messitte</h3>
+              <p class="pub-item__desc" data-i18n="pub-desc-1">
+                Capítulo publicado em obra organizada por Carlos Mário Velloso, Flávio Jardim,
+                Marcus Vinícius Onodera, Carlos Enrique Caputo Bastos e João Carlos B. Velloso.
+                Amanuense, 2026.
+              </p>
+            </div>
+          </article>
+          <article class="pub-item">
             <img class="pub-item__cover" src="assets/pub-evolution.jpg"
                  alt="Capa de U.S. Supreme Court Precedents on Arbitration" loading="lazy" />
             <div class="pub-item__text">
-              <p class="pub-item__meta"><span class="pub-item__idx">01</span> Brill · Nijhoff · 2025</p>
+              <p class="pub-item__meta"><span class="pub-item__idx">02</span> Brill · Nijhoff · 2025</p>
               <h3 class="pub-item__title">The Evolution of Arbitration in Light of Supreme Court Decisions</h3>
-              <p class="pub-item__desc">
-                Capítulo em <em>U.S. Supreme Court Precedents on Arbitration: Shaping the American
-                Arbitration Law and Practice</em>. Yasmine Lahlou, Carlos Alberto Carmona,
-                Kabir Duggal e Gustavo Vaughn (eds.). Leiden / Boston, março de 2025.
+              <p class="pub-item__desc" data-i18n="pub-desc-2">
+                Capítulo publicado em <em>U.S. Supreme Court Precedents on Arbitration: Shaping
+                the American Arbitration Law and Practice</em>, obra organizada por Yasmine
+                Lahlou, Carlos Alberto Carmona, Kabir Duggal e Gustavo Vaughn. Brill Nijhoff, 2025.
               </p>
             </div>
           </article>
@@ -1271,11 +1275,12 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
             <img class="pub-item__cover" src="assets/pub-punitive-damages.jpg"
                  alt="Capa de The Recognition and Enforcement of Punitive Damages Judgments Across the Globe" loading="lazy" />
             <div class="pub-item__text">
-              <p class="pub-item__meta"><span class="pub-item__idx">02</span> Maastricht Law Series · 2023</p>
+              <p class="pub-item__meta"><span class="pub-item__idx">03</span> Maastricht Law Series · 2023</p>
               <h3 class="pub-item__title">The Recognition and Enforcement of Foreign Punitive Damages Decisions in Brazil</h3>
-              <p class="pub-item__desc">
-                Capítulo em <em>The Recognition and Enforcement of Punitive Damages Judgments Across
-                the Globe</em>. Lotte Meurkens e Cedric Vanleenhove (eds.). Haia, 2023.
+              <p class="pub-item__desc" data-i18n="pub-desc-3">
+                Capítulo publicado em <em>The Recognition and Enforcement of Punitive Damages
+                Judgments Across the Globe</em>, obra organizada por Lotte Meurkens e Cedric
+                Vanleenhove. Maastricht Law Series, 2023.
               </p>
             </div>
           </article>
@@ -1283,11 +1288,11 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
             <img class="pub-item__cover" src="assets/pub-pro-arbitration.jpg"
                  alt="Capa de Pro-Arbitration Revisited: A Tribute to Professor George Bermann" loading="lazy" />
             <div class="pub-item__text">
-              <p class="pub-item__meta"><span class="pub-item__idx">03</span> Juris Publishing · 2023</p>
+              <p class="pub-item__meta"><span class="pub-item__idx">04</span> Juris Publishing · 2023</p>
               <h3 class="pub-item__title">Short Reflections on the Pro-Arbitration Character of a Pre-Dispute Waiver</h3>
-              <p class="pub-item__desc">
-                Capítulo em <em>Pro-Arbitration Revisited: A Tribute to Professor George Bermann from
-                His Students Over the Years</em>. Kabir Duggal et al. (eds.). Nova York, 2023.
+              <p class="pub-item__desc" data-i18n="pub-desc-4">
+                Capítulo publicado em <em>Pro-Arbitration Revisited: A Tribute to Professor
+                George Bermann from His Students Over the Years</em>. Juris Publishing, 2023.
               </p>
             </div>
           </article>
@@ -1295,12 +1300,12 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
             <img class="pub-item__cover" src="assets/pub-prefacio.jpg"
                  alt="Capa de O Hoje e o Amanhã na Tributação dos Combustíveis" loading="lazy" />
             <div class="pub-item__text">
-              <p class="pub-item__meta"><span class="pub-item__idx">04</span> Lumen Juris · 2022</p>
+              <p class="pub-item__meta"><span class="pub-item__idx">05</span> Lumen Juris · 2022</p>
               <h3 class="pub-item__title">Prefácio</h3>
-              <p class="pub-item__desc">
-                Em <em>O Hoje e o Amanhã na Tributação dos Combustíveis</em>. Fabio Silva Alves,
-                Janssen Murayama, José Guilherme Costa e Mozart Rodrigues Filho (orgs.).
-                Rio de Janeiro: Lumen Juris, 2022.
+              <p class="pub-item__desc" data-i18n="pub-desc-5">
+                Prefácio à obra <em>O Hoje e o Amanhã na Tributação dos Combustíveis</em>,
+                organizada por Fabio Silva Alves, Janssen Murayama, José Guilherme Costa e
+                Mozart Rodrigues Filho. Lumen Juris, 2022.
               </p>
             </div>
           </article>
@@ -1313,18 +1318,12 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
       <div class="container">
         <div class="section-head" data-reveal>
           <span class="section-num">04</span>
-          <h2 class="section-title">Contato</h2>
-        </div>
-
-        <div class="contato__top">
-          <p class="contato__statement" data-reveal>
-            Para discutir um caso perante os Tribunais Superiores, entre em contato.
-          </p>
+          <h2 class="section-title" data-i18n="nav-contact">Contato</h2>
         </div>
 
         <dl class="contato__details" data-reveal>
           <div class="detail">
-            <dt>E-mail</dt>
+            <dt data-i18n="contato-email-label">E-mail</dt>
             <dd><a href="mailto:erico@erico.law">erico@erico.law</a></dd>
           </div>
           <div class="detail">
@@ -1332,12 +1331,12 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
             <dd><a href="https://www.linkedin.com/in/ericocarvalho/" target="_blank" rel="noopener">/in/ericocarvalho</a></dd>
           </div>
           <div class="detail">
-            <dt>Endereço</dt>
-            <dd>SHIS QL 22, Conjunto 9, Casa 8<br />Lago Sul · Brasília / DF</dd>
+            <dt data-i18n="contato-address-label">Endereço</dt>
+            <dd data-i18n="contato-address-value">SHIS QL 22, Conjunto 9, Casa 8<br />Lago Sul · Brasília / DF</dd>
           </div>
           <div class="detail">
-            <dt>Registro</dt>
-            <dd>OAB/DF 1182426</dd>
+            <dt data-i18n="contato-registro-label">Registro</dt>
+            <dd>OAB/DF 18.598</dd>
           </div>
         </dl>
       </div>
@@ -1351,18 +1350,18 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
       <div class="footer__grid">
         <div class="footer__brand">
           <svg class="footer__wordmark" role="img" aria-label="erico"><use href="#brand-wordmark"></use></svg>
-          <p>Contencioso estratégico nos Tribunais Superiores. Brasília.</p>
+          <p data-i18n="footer-tagline">Contencioso estratégico perante os tribunais superiores. Brasília.</p>
         </div>
         <div class="footer__nav">
           <div class="footer__nav-col">
-            <h4>Navegação</h4>
-            <a href="#atuacao">Atuação</a>
-            <a href="#perfil">Perfil</a>
-            <a href="#publicacoes">Publicações</a>
-            <a href="#contato">Contato</a>
+            <h4 data-i18n="footer-nav-label">Navegação</h4>
+            <a href="#atuacao" data-i18n="nav-practice">Atuação</a>
+            <a href="#perfil" data-i18n="nav-profile">Perfil</a>
+            <a href="#publicacoes" data-i18n="nav-pubs">Publicações</a>
+            <a href="#contato" data-i18n="nav-contact">Contato</a>
           </div>
           <div class="footer__nav-col">
-            <h4>Contato</h4>
+            <h4 data-i18n="nav-contact">Contato</h4>
             <a href="mailto:erico@erico.law">erico@erico.law</a>
             <a href="https://www.linkedin.com/in/ericocarvalho/" target="_blank" rel="noopener">LinkedIn</a>
             <span>Lago Sul · Brasília / DF</span>
@@ -1370,7 +1369,7 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
         </div>
       </div>
       <div class="footer__bottom">
-        <p>© MMXXVI Erico Advogados · Registro OAB/DF 1182426 · Brasília — DF</p>
+        <p>Erico Advogados · OAB/DF 18.598 · Brasília — DF</p>
         <p class="credit">Identidade &amp; site — <a href="#hero">Andre Finageiv</a></p>
       </div>
     </div>
@@ -1453,29 +1452,72 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
     menu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { toggleMenu(false); }); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') toggleMenu(false); });
 
-    /* ── LANG TOGGLE (EN scaffold) ────────────────────── */
+    /* ── LANG TOGGLE (PT/EN content swap — meta tags stay PT) ── */
+    var EN = {
+      'nav-practice': 'Practice',
+      'nav-profile': 'Profile',
+      'nav-pubs': 'Publications',
+      'nav-contact': 'Contact',
+      'hero-title-1': 'Strategic Litigation.',
+      'hero-title-2': 'Arbitration.',
+      'hero-sub': 'A strategic litigation practice, engaged primarily before Brazil’s Supreme Federal Court and Superior Court of Justice and in the disputes that bring arbitration before the courts.',
+      'hero-cta1': 'Explore the practice',
+      'hero-cta2': 'Contact the firm',
+      'atuacao-lead': 'The firm’s work is devoted primarily to litigation before Brazil’s superior courts and to court proceedings involving arbitration, from the framing of the case to final argument.',
+      'pillar1-heading': 'Supreme Federal Court',
+      'pillar1-title': 'Constitutional questions of national reach',
+      'pillar1-desc': 'The firm appears in abstract constitutional review proceedings and in extraordinary appeals, in disputes that define the constitutional limits of regulation and the legal environment for economic activity.',
+      'pillar2-heading': 'Superior Court of Justice',
+      'pillar2-title': 'Business disputes',
+      'pillar2-desc': 'The firm handles special appeals and original proceedings in complex contractual and corporate disputes, before the court entrusted with the uniform interpretation of Brazilian federal law.',
+      'pillar3-heading': 'Arbitration',
+      'pillar3-title': 'Arbitration before the courts',
+      'pillar3-desc': 'The firm acts in judicial measures in support of arbitration and in post-award litigation, including annulment actions and the recognition of foreign decisions, as well as the appeals that bring arbitration issues before the Superior Court of Justice.',
+      'modelo-eyebrow': 'The firm',
+      'modelo-statement': 'A dedicated practice.',
+      'modelo-col-heading': 'Direct conduct',
+      'modelo-col-desc': 'Every case is conducted by the founding partner, from strategy to oral argument. The firm was built to preserve that standard.',
+      'perfil-role': 'Founding Partner',
+      'perfil-lead': 'Erico Carvalho has practiced for more than twenty years, primarily before Brazil’s Supreme Federal Court and Superior Court of Justice, in constitutional and business disputes of national significance.',
+      'perfil-bio-1': 'Before founding Erico Advogados, he built that record in Brasília, at the forefront of disputes of national and cross-border reach. That experience underpins an independent practice, devoted to mandates that call for the direct engagement of the lawyer responsible for strategy.',
+      'perfil-bio-2': 'His work centers on the development of legal theory and the conduct of cases whose outcome turns on a precise reading of constitutional or federal law, with particular experience in the relationship between arbitration and the state courts.',
+      'perfil-bio-3': 'He holds an LL.M. from Columbia Law School, where he was named a Harlan Fiske Stone Scholar and served on the editorial staff of the American Review of International Arbitration. His writing follows the central themes of his practice and has been published in Brazil and abroad.',
+      'perfil-formacao-label': 'Education',
+      'perfil-cred-unb': '<strong>University of Brasília</strong> · International Relations',
+      'pubs-lead': 'The firm’s academic and technical writing brings together work published in Brazil and abroad on the central themes of the practice, among them arbitration and its relationship with the courts.',
+      'pub-desc-1': 'Chapter in a volume honoring Senior U.S. District Judge Peter J. Messitte, edited by Carlos Mário Velloso, Flávio Jardim, Marcus Vinícius Onodera, Carlos Enrique Caputo Bastos and João Carlos B. Velloso. Amanuense, 2026.',
+      'pub-desc-2': 'Chapter in <em>U.S. Supreme Court Precedents on Arbitration: Shaping the American Arbitration Law and Practice</em>, edited by Yasmine Lahlou, Carlos Alberto Carmona, Kabir Duggal and Gustavo Vaughn. Brill Nijhoff, 2025.',
+      'pub-desc-3': 'Chapter in <em>The Recognition and Enforcement of Punitive Damages Judgments Across the Globe</em>, edited by Lotte Meurkens and Cedric Vanleenhove. Maastricht Law Series, 2023.',
+      'pub-desc-4': 'Chapter in <em>Pro-Arbitration Revisited: A Tribute to Professor George Bermann from His Students Over the Years</em>. Juris Publishing, 2023.',
+      'pub-desc-5': 'Foreword to <em>O Hoje e o Amanhã na Tributação dos Combustíveis</em>, edited by Fabio Silva Alves, Janssen Murayama, José Guilherme Costa and Mozart Rodrigues Filho. Lumen Juris, 2022.',
+      'contato-email-label': 'Email',
+      'contato-address-label': 'Address',
+      'contato-address-value': 'SHIS QL 22, Conjunto 9, Casa 8<br />Lago Sul · Brasília, DF, Brazil',
+      'contato-registro-label': 'Bar registration',
+      'footer-tagline': 'Strategic litigation before Brazil’s superior courts. Brasília.',
+      'footer-nav-label': 'Navigation'
+    };
+    var i18nEls = Array.prototype.slice.call(document.querySelectorAll('[data-i18n]'));
     var langBtns = document.querySelectorAll('[data-lang]');
-    langBtns.forEach(function (b) {
-      b.addEventListener('click', function () {
-        if (b.dataset.lang === 'en') {
-          showToast('Versão em inglês em breve.');
-          return;
-        }
+    var currentLang = 'pt';
+    function setLang(lang) {
+      if (lang === currentLang) return;
+      currentLang = lang;
+      i18nEls.forEach(function (el) {
+        if (el.dataset.ptHtml === undefined) el.dataset.ptHtml = el.innerHTML;
+        var key = el.getAttribute('data-i18n');
+        el.innerHTML = (lang === 'en' && EN[key]) ? EN[key] : el.dataset.ptHtml;
       });
-    });
-    var toastEl;
-    function showToast(msg) {
-      if (!toastEl) {
-        toastEl = document.createElement('div');
-        toastEl.setAttribute('role', 'status');
-        toastEl.style.cssText = 'position:fixed;left:50%;bottom:32px;transform:translateX(-50%) translateY(20px);background:#1A1A19;color:#F3F2EE;padding:14px 22px;font:500 13px/1 Inter,sans-serif;letter-spacing:.04em;z-index:300;opacity:0;transition:opacity .3s,transform .3s;';
-        document.body.appendChild(toastEl);
-      }
-      toastEl.textContent = msg;
-      requestAnimationFrame(function () { toastEl.style.opacity = '1'; toastEl.style.transform = 'translateX(-50%) translateY(0)'; });
-      clearTimeout(toastEl._t);
-      toastEl._t = setTimeout(function () { toastEl.style.opacity = '0'; toastEl.style.transform = 'translateX(-50%) translateY(20px)'; }, 2600);
+      document.documentElement.lang = lang === 'en' ? 'en' : 'pt-BR';
+      langBtns.forEach(function (b) {
+        var active = b.dataset.lang === lang;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
     }
+    langBtns.forEach(function (b) {
+      b.addEventListener('click', function () { setLang(b.dataset.lang); });
+    });
 
     /* ── SCROLL REVEALS (sweep-based — never leaves content hidden) ── */
     var revealEls = Array.prototype.slice.call(document.querySelectorAll('[data-reveal], .line-draw'));
