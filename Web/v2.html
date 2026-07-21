@@ -1248,9 +1248,9 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
         finished = true;
         gsap.to('#loader', {
           yPercent: -100, duration: 0.55, ease: 'power4.inOut',
-          /* fire the headline reveal almost immediately as the (now-fast) loader lifts,
-             so the char-rise meets the moment the hero text uncovers */
-          onStart: function () { gsap.delayedCall(0.08, heroIntro); },
+          /* 0.34s: the lifting panel must clear the headline area BEFORE the char-rise
+             starts, or the first word finishes hidden and the rest pops in already-risen */
+          onStart: function () { gsap.delayedCall(0.34, heroIntro); },
           onComplete: function () { showAll(); ScrollTrigger.refresh(); }
         });
       }
@@ -1280,12 +1280,27 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
        body is behind it: cream on the night/azul bands, ink on the day sections.
        (Replaces mix-blend-difference, whose hue shifted unpredictably per band.) */
     var navEl = document.getElementById('nav');
+    function applyBg(bgName) {
+      gsap.to(body, { backgroundColor: BG[bgName] || BG.night, duration: 0.7, ease: 'power2.out' });
+      navEl.classList.toggle('nav--on-light', bgName === 'day');
+    }
+    window.__applyBgScene = applyBg;
+    /* positional check, NOT a state flag: on a large scroll jump all triggers fire in
+       one tick and callback order isn't guaranteed, so a flag set by the pin's onToggle
+       can lag behind the section triggers reading it */
+    function pubsPinHoldsLight() {
+      var st = window.__pubsPinST;
+      if (!st) return false;
+      var y = st.scroll();
+      return y >= st.start && y < st.end;
+    }
     document.querySelectorAll('[data-bg]').forEach(function (sec) {
-      var color = BG[sec.dataset.bg] || BG.night;
-      var onLight = sec.dataset.bg === 'day';
       function applyScene() {
-        gsap.to(body, { backgroundColor: color, duration: 0.7, ease: 'power2.out' });
-        navEl.classList.toggle('nav--on-light', onLight);
+        /* while the publications gallery is pinned, hold the light scene — the dark
+           Contato section crosses the 55% line before the pin releases; the pin's own
+           onLeave/onEnterBack (below) flips the scene at the actual release point */
+        if (pubsPinHoldsLight() && sec.dataset.bg !== 'day') return;
+        applyBg(sec.dataset.bg);
       }
       ScrollTrigger.create({
         trigger: sec, start: 'top 55%', end: 'bottom 55%',
@@ -1360,7 +1375,7 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
         var progress = document.getElementById('pubsProgress');
         if (!track || !pin) return;
         var dist = function () { return Math.max(track.scrollWidth - window.innerWidth, 0); };
-        gsap.to(track, {
+        var pubsTween = gsap.to(track, {
           x: function () { return -dist(); },
           ease: 'none',
           scrollTrigger: {
@@ -1369,9 +1384,16 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
             pin: true, scrub: 0.6, invalidateOnRefresh: true, anticipatePin: 1,
             onUpdate: function (st) {
               if (progress) progress.style.transform = 'scaleX(' + st.progress + ')';
-            }
+            },
+            /* the scene stays light for the entire pinned gallery; it flips dark only
+               at release (page resumes moving) and back to light the moment the
+               gallery re-pins on the way up — see the guard in the bg morph loop */
+            onLeave: function () { if (window.__applyBgScene) window.__applyBgScene('night'); },
+            onEnterBack: function () { if (window.__applyBgScene) window.__applyBgScene('day'); }
           }
         });
+        window.__pubsPinST = pubsTween.scrollTrigger;
+        return function () { window.__pubsPinST = null; };   /* matchMedia teardown (<901px) */
       }
     });
 
