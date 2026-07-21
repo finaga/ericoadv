@@ -138,6 +138,11 @@
     ::selection { background: var(--azul); color: var(--concreto); }
 
     .container { max-width: var(--max); margin-inline: auto; padding-inline: var(--pad); }
+    /* the hero container is a flex item (hero__inner is a flex column); its auto
+       margins defeat stretch, so it shrink-wraps to content and RE-CENTERS when the
+       PT/EN swap changes the text width. width:100% pins it — headline position is
+       identical in both languages */
+    .hero__inner > .container { width: 100%; }
 
     /* Overline recipe — Inter 500 / 12px / 0.14em */
     .overline {
@@ -270,11 +275,35 @@
     .hero__statement {
       font-family: var(--display); font-weight: 800;
       font-size: var(--fs-display-xl); line-height: .98; letter-spacing: -0.015em;
-      color: var(--concreto); text-wrap: balance; margin: 0 0 var(--space-xl);
+      color: var(--concreto); margin: 0 0 var(--space-xl);
+      /* no text-wrap: balance — Chrome shrink-centers the balanced block, which
+         shifted the shorter EN headline ~80px right of the PT one on wide screens */
     }
     .hero__statement .line { display: block; overflow: hidden; padding-bottom: .06em; margin-bottom: -.06em; }
     .hero__statement .line--lead { color: var(--azul-lift); }   /* azul-led positioning line — matches Site A */
     .hero__statement .line--accent { color: var(--dourado); }
+    /* ── HERO INTRO — pure CSS line-mask rise (replaces the GSAP char-split).
+       Compositor-driven transform/opacity transitions can't be frozen or skipped
+       by main-thread stalls (ScrollTrigger.refresh, WebGL compile), which kept
+       snapping the old char timeline to its end state. Hidden state is keyed on
+       body.is-loading (set in the HTML, removed by showAll() in every JS path);
+       the <noscript> block force-reveals when JS is off. Plain text in the lines
+       also keeps PT and EN rendering at identical metrics/positions. */
+    .hero__statement .line__txt { display: inline-block; transform: translateY(115%); }
+    body:not(.is-loading) .hero__statement .line__txt {
+      transform: translateY(0);
+      transition: transform 1.05s cubic-bezier(0.19, 1, 0.22, 1) 0.05s;
+    }
+    body:not(.is-loading) .hero__statement .line:nth-child(2) .line__txt { transition-delay: 0.17s; }
+    [data-hero-fade] { opacity: 0; transform: translateY(24px); }
+    body:not(.is-loading) [data-hero-fade] { opacity: 1; transform: translateY(0); }
+    /* transitions live on the revealed state only; the CTA and contact link keep
+       their hover transitions (background/color) delay-free in the same shorthand */
+    body:not(.is-loading) .hero__eyebrow { transition: opacity 0.9s var(--ease-out) 0.30s, transform 0.9s var(--ease-out) 0.30s; }
+    body:not(.is-loading) .hero__sub     { transition: opacity 0.9s var(--ease-out) 0.42s, transform 0.9s var(--ease-out) 0.42s; }
+    body:not(.is-loading) .hero__cta     { transition: background 0.4s var(--ease-out), color 0.4s, border-color 0.4s, opacity 0.9s var(--ease-out) 0.52s, transform 0.9s var(--ease-out) 0.52s; }
+    body:not(.is-loading) .hero__contact { transition: color 0.3s var(--ease-out), opacity 0.9s var(--ease-out) 0.60s, transform 0.9s var(--ease-out) 0.60s; }
+    body:not(.is-loading) .hero__meta    { transition: opacity 0.9s var(--ease-out) 0.70s, transform 0.9s var(--ease-out) 0.70s; }
     .hero__sub { max-width: 52ch; font-size: var(--fs-body-lg); color: var(--cream-soft); }
     .hero__cta {
       display: inline-flex; align-items: center; gap: var(--space-md);
@@ -597,7 +626,7 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
 -474 0 -868 -4 -875 -8z"/>
 </g></symbol></svg>
 
-  <noscript><style>.loader{display:none!important}body.is-loading{overflow:auto!important}</style></noscript>
+  <noscript><style>.loader{display:none!important}body.is-loading{overflow:auto!important}.hero__statement .line__txt{transform:none!important}[data-hero-fade]{opacity:1!important;transform:none!important}</style></noscript>
 
   <a class="skip" href="#atuacao">Pular para o conteúdo</a>
 
@@ -654,7 +683,7 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
       <div class="hero__inner">
         <div class="container">
           <p class="overline hero__eyebrow" data-hero-fade>Brasília</p>
-          <h1 class="hero__statement" aria-label="Contencioso Estratégico. Arbitragem.">
+          <h1 class="hero__statement">
             <span class="line line--lead"><span class="line__txt" data-i18n="hero-title-1">Contencioso Estratégico.</span></span>
             <span class="line"><span class="line__txt" data-i18n="hero-title-2">Arbitragem.</span></span>
           </h1>
@@ -1146,29 +1175,6 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
     if (!hasGsap) return;   /* everything below needs GSAP */
 
     /* ══ SPLIT HELPERS ════════════════════════════════════ */
-    function splitChars(el) {
-      /* word-aware: chars become inline-blocks, but words never break mid-word */
-      var text = el.textContent;
-      el.textContent = '';
-      var chars = [];
-      text.split(' ').forEach(function (word, wi) {
-        if (wi > 0) el.appendChild(document.createTextNode(' '));
-        if (!word) return;
-        var w = document.createElement('span');
-        w.style.display = 'inline-block';
-        w.style.whiteSpace = 'nowrap';
-        Array.from(word).forEach(function (ch) {
-          var s = document.createElement('span');
-          s.style.display = 'inline-block';
-          s.style.willChange = 'transform';
-          s.textContent = ch;
-          w.appendChild(s);
-          chars.push(s);
-        });
-        el.appendChild(w);
-      });
-      return chars;
-    }
     function splitWords(el) {
       var nodes = Array.prototype.slice.call(el.childNodes);
       el.textContent = '';
@@ -1192,43 +1198,15 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
       return Array.prototype.slice.call(el.querySelectorAll('.w'));
     }
 
-    /* ══ HERO INTRO TIMELINE (plays after loader) ═════════ */
-    var heroChars = [];
-    document.querySelectorAll('.hero__statement .line__txt').forEach(function (line) {
-      heroChars.push(splitChars(line));
-    });
-    /* Hide the headline + fade items IMMEDIATELY at split time (page load, while the
-       loader still covers the hero), so they never flash in their final position before
-       the intro plays. Previously .from() only set the hidden start-state when heroIntro
-       ran — 0.34s into the loader lift — which read as "text, then animate". */
-    if (!reduced) {
-      heroChars.forEach(function (chars) { gsap.set(chars, { yPercent: 115 }); });
-      gsap.set('[data-hero-fade]', { opacity: 0, y: 24 });
-    }
-
+    /* ══ HERO INTRO ═══════════════════════════════════════
+       The text reveal is pure CSS now (see the .line__txt / [data-hero-fade] rules):
+       showAll() removing body.is-loading triggers compositor-driven transitions that
+       main-thread stalls can't freeze or skip — the GSAP char-split timeline kept
+       snapping to its end state whenever a stall landed mid-rise. Plain text in the
+       lines also keeps PT and EN at identical metrics and position.
+       The only JS-driven piece left is the WebGL zoom-settle. */
     function heroIntro() {
-      if (reduced) { if (window.__heroIntro) window.__heroIntro(0.01); return; }
-      var tl = gsap.timeline();
-      if (window.__heroIntro) window.__heroIntro(2.2);
-      heroChars.forEach(function (chars, i) {
-        tl.to(chars, {
-          yPercent: 0, duration: 1.0, ease: 'power4.out', stagger: 0.022
-        }, 0.15 + i * 0.12);
-      });
-      tl.to('[data-hero-fade]', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.08 }, 0.7);
-      return tl;
-    }
-
-    /* Failsafe: the pre-hide above is only safe paired with a guaranteed reveal.
-       If the intro never runs (inactive tab, headless/SSR render, loader hiccup),
-       force the headline + fade items visible so the hero can never ship blank. */
-    if (!reduced) {
-      setTimeout(function () {
-        if (!heroChars.length) return;
-        if (Math.abs(gsap.getProperty(heroChars[0][0], 'yPercent')) < 1) return;  // intro already revealed it
-        heroChars.forEach(function (chars) { gsap.to(chars, { yPercent: 0, duration: 0.5, ease: 'power3.out', overwrite: 'auto' }); });
-        gsap.to('[data-hero-fade]', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', overwrite: 'auto' });
-      }, 4000);
+      if (window.__heroIntro) window.__heroIntro(reduced ? 0.01 : 2.2);
     }
 
     /* ══ LOADER ═══════════════════════════════════════════ */
@@ -1252,16 +1230,10 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
         finished = true;
         gsap.to('#loader', {
           yPercent: -100, duration: 0.55, ease: 'power4.inOut',
-          /* 0.34s: the lifting panel must clear the headline area BEFORE the char-rise
-             starts, or the first word finishes hidden and the rest pops in already-risen */
-          onStart: function () { gsap.delayedCall(0.34, heroIntro); },
-          onComplete: function () {
-            showAll();
-            /* defer the refresh until the char intro is over — a full ScrollTrigger
-               layout pass stalls the main thread long enough to freeze the rise
-               mid-word (the "Contencioso alone, then everything pops" bug) */
-            gsap.delayedCall(2.1, function () { ScrollTrigger.refresh(); });
-          }
+          onStart: heroIntro,   /* WebGL zoom-settle rides along with the lift */
+          /* showAll() drops body.is-loading → the CSS hero reveal fires; its 0.05–0.7s
+             transition delays land after the panel has cleared the headline area */
+          onComplete: function () { showAll(); ScrollTrigger.refresh(); }
         });
       }
       gsap.to(counter, {
