@@ -790,7 +790,7 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
         <div class="perfil__grid">
           <figure class="perfil__photo" data-reveal>
             <div class="perfil__frame" id="perfilFrame">
-              <img id="perfilImg" src="assets/erico-retrato.jpg" alt="Retrato de Erico Carvalho, sócio-fundador da Erico Advogados." width="1254" height="1254" loading="lazy" />
+              <img id="perfilImg" src="assets/erico-retrato.jpg" alt="Retrato de Erico Carvalho, sócio-fundador da Erico Advogados." width="832" height="1280" loading="lazy" />
             </div>
             <figcaption class="perfil__caption">
               <span>Erico Carvalho</span>
@@ -1456,6 +1456,8 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
     var i18nEls = Array.prototype.slice.call(document.querySelectorAll('[data-i18n]'));
     var langBtns = document.querySelectorAll('[data-lang]');
     var currentLang = 'pt';
+    var PT_TITLE = document.title;
+    var EN_TITLE = 'Erico Advogados · Strategic Litigation · Arbitration · Brasília';
     function setLang(lang) {
       if (lang === currentLang) return;
       currentLang = lang;
@@ -1465,6 +1467,8 @@ c603 0 795 3 804 12 15 15 15 75 2 170 -10 68 -20 114 -54 244 -15 61 -107
         el.innerHTML = (lang === 'en' && EN[key]) ? EN[key] : el.dataset.ptHtml;
       });
       document.documentElement.lang = lang === 'en' ? 'en' : 'pt-BR';
+      /* browser-tab title only — meta/og/twitter/JSON-LD stay PT (see EN toggle notes) */
+      document.title = lang === 'en' ? EN_TITLE : PT_TITLE;
       langBtns.forEach(function (b) {
         var active = b.dataset.lang === lang;
         b.classList.toggle('active', active);
